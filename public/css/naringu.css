@@ -685,6 +685,9 @@ a.pagination-item:hover {
   background: transparent;
   border: none;
 }
+.film{
+  height: 900px;
+}
 /*
  * Reverse layout
  *
