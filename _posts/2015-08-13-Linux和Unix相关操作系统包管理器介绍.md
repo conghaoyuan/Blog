@@ -7,7 +7,7 @@ categories:
 
 # Linux
 -------------
-## [RedHat](http://baike.baidu.com/view/1139590.htm target="_blank")
+## <a href="http://baike.baidu.com/view/1139590.htm" target="_blank">RedHat</a>
 ## [CentOS](http://baike.baidu.com/view/26404.htm target="_blank")
 ## [Debian](http://baike.baidu.com/view/40687.htm target="_blank")
 ## [Ubuntu](http://baike.baidu.com/view/4236.htm target="_blank")
