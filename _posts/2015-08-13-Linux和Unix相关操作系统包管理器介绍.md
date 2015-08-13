@@ -5,16 +5,12 @@ categories:
 - 随笔
 ---
 
-
-##Linux和Unix 相关操作系统包管理器介绍
-
-----------
-
-### Linux
-#### RedHat
-#### CentOS
-#### Debian
-#### [Ubuntu](http://baike.baidu.com/link?url=OvT6HGSSY2nDQgnk9-vTHXv6C0WkaByjkvIl_W_C4AWB0AMofD6lzhXzRNhWrr_h-l0YZLsOB9Maa5BHZKCnra)
+# Linux
+-------------
+## [RedHat](http://baike.baidu.com/view/1139590.htm)
+## [CentOS](http://baike.baidu.com/view/26404.htm)
+## [Debian](http://baike.baidu.com/view/40687.htm)
+## [Ubuntu](http://baike.baidu.com/view/4236.htm)
 
 **Ubuntu**（乌班图)是一个以桌面应用为主的Linux操作系统，是基于linux的免费开源桌面PC操作系统，基于 **Debian** GNU/Linux。作为Debian的衍生版，Ubuntu同样采用**`dpkg`**进行软件包管理。
 
@@ -76,7 +72,8 @@ categories:
 * aptitude full-upgrade &nbsp;&nbsp;#同
 
 
-
+# Unix
+-------------
 
 
 
