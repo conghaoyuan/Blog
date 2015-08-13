@@ -8,9 +8,9 @@ categories:
 # Linux
 -------------
 ## <a href="http://baike.baidu.com/view/1139590.htm" target="_blank">RedHat</a>
-## [CentOS](http://baike.baidu.com/view/26404.htm target="_blank")
-## [Debian](http://baike.baidu.com/view/40687.htm target="_blank")
-## [Ubuntu](http://baike.baidu.com/view/4236.htm target="_blank")
+## <a href="http://baike.baidu.com/view/26404.htm" target="_blank">CentOS</a>
+## <a href="http://baike.baidu.com/view/40687.htm" target="_blank">Debian</a>
+## <a href="http://baike.baidu.com/view/4236.htm" target="_blank">Ubuntu</a>
 
 **Ubuntu**（乌班图)是一个以桌面应用为主的Linux操作系统，是基于linux的免费开源桌面PC操作系统，基于 **Debian** GNU/Linux。作为Debian的衍生版，Ubuntu同样采用**`dpkg`**进行软件包管理。
 
