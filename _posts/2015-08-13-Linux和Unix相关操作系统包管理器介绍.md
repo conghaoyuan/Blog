@@ -206,16 +206,139 @@ BSD系统：<br/>
 <a href="http://baike.baidu.com/view/21459.htm" target="_blank">FreeBSD</a>&nbsp;&nbsp;&nbsp;&nbsp;
 <a href="http://baike.baidu.com/view/337596.htm" target="_blank">OpenBSD</a>&nbsp;&nbsp;&nbsp;&nbsp;
 <a href="http://baike.baidu.com/view/288469.htm" target="_blank">NetBSD</a>&nbsp;&nbsp;&nbsp;&nbsp;
-<a href="http://baike.baidu.com/view/24778.htm" target="_blank">APPle UNIX(MAC OS bsd内核）</a>
+<a href="http://baike.baidu.com/view/24778.htm" target="_blank">APPle UNIX(MAC OS bsd内核）</a><br/>
+开发中用到最多的便是Mac os X ,故只介绍mac的包管理器。<b>Homebrew</b>&&<b>Macports</b>
 </div>
 # Unix
 -------------
 
 ## <a href="http://baike.baidu.com/view/24778.htm" target="_blank">Mac</a>
 
+##### 介绍
+
+* **`Homebrew`** 是(Ruby)[https://www.ruby-lang.org/en/downloads/]开发的智能包管理系统,能够判断已有的依赖组件,不用重新下载一套组件,Homebrew 本身是使用Git管理的,升级非常方便.
+* **`Macports`** 是自成一派,他的所有组件都会安装到/opt/目录下,带来的问题就是很多系统已经存在的组件也会重新下载,费时费空间.
+
+--------------
+#### Homebrew安装使用
+
+##### 安装 
+	ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"
+##### 自检
+	brew doctor
+##### 常用命令(以安装php为例)
+
+* brew update                        #更新brew可安装包，建议每次执行一下
+* brew search php55                  #搜索php5.5
+* brew tap josegonzalez/php          #安装扩展<gihhub_user/repo>   
+* brew tap                           #查看安装的扩展列表
+* brew install php55                 #安装php5.5
+* brew remove  php55                 #卸载php5.5
+* brew upgrade 						 #升级所有package
+* brew upgrade php55                 #升级php5.5
+* brew options php55                 #查看php5.5安装选项
+* brew info    php55                 #查看php5.5相关信息
+* brew home    php55                 #访问php5.
+* brew deps    php55                 #显示php55包依赖
+* brew list							 #列出brew安装的软件
+* brew services list                 #查看系统通过 brew 安装的服务
+* brew services cleanup              #清除已卸载无用的启动配置文件
+* brew services restart php55        #重启php-fpm
+* brew --cache					     #查看下载的package存放目录  /Library/Caches/Homebrew
+* brew server *						 #启动web服务器，可以通过浏览器访问http://localhost:4567/ 来同网页来管理包  
+	注:如果提示 
+
+    Error: Sinatra required but not found
+
+    To install: /usr/bin/gem install sinatra
+
+    安装一下sinatra：sudo /usr/bin/gem install sinatra
+
+##### 删除Homebrew
+```
+cd `brew –prefix`       #找到 Homebrew
+
+rm -rf Cellar			#删除Homebrew 安装的程序包和库
+
+brew prune				#删除无效 Link	
+
+rm -rf Library .git .gitignore bin/brew README.md share/man/man1/brew
+
+rm -rf ~/Library/Caches/Homebrew   #删除缓存
+```
+
+------------
+#### Macports安装使用
+
+##### 安装
+
+1.访问官方网站[http://www.macports.org/install.php]，下载相关系统dmg安装,一步一步即可。  
+2.通过source安装,可打开[http://distfiles.macports.org/MacPorts/]查看macports版本信息，选定一个版本安装即可。如下载最新版本2.3.3
+
+	wget http://distfiles.macports.org/MacPorts/MacPorts-2.3.3.tar.gz
+	tar zxvf MacPorts-2.3.3.tar.gz
+	cd MacPorts-2.3.3.tar.gz
+	./configure && make && sudo make install
+	cd ../
+	rm -rf MacPorts-2.3.3*
+
+然后将/opt/local/bin和/opt/local/sbin添加到$PATH搜索路径中,在编辑/etc/profile文件中，加上
+
+	export PATH=/opt/local/bin:$PATH
+	export PATH=/opt/local/sbin:$PATH
+
+##### MacPorts使用
+
+* port help  selfupdate   #查看某个（selfupdate）指令的帮助说明
+* sudo port selfupdade    #同步本地和全球的软件树,有必要时,同时升级mac port自己.
+* sudo port sync          #同步本地和全球的ports tree,但不检查自己是否有更新.
+* port list     #列出当前所有的可用软件,如果想查找是否有自己想要的软件时,还是使用search指令方便一些
+* port search   #模糊搜索,可以匹配软件名字和描述,还有更高级的用法,具体看port help search
+* port info     #查看一款软件的详细信息 port info php
+* port deps		#查看一款软件的依赖关系 port deps apache2
+* port variants #在安装软件前,用这个命令查看软件是否有多个版本.再选择安装一个合适的版本
+* sudo port install  #安装软件命令,安装前最好使用variants命令查看是否有多个不同版本.
+* port clean    #删除一些编译软件时留下的临时文件.
+* port uninstall  #卸载软件命令,如果这个软件依赖与另外的一款软件,默认不删除它依赖的软件,
+* port -f uninstall vile	#使用参数 -f (force) 可以强行删除它依赖的软件.
+* port contents		#显示软件安装后的文件列表.
+* port installed	#列出全部或者指定的已经安装的软件.
+* port outdated		#查看已经安装的软件是否有更新,在执行这个指令前,先执行selfupdate 或者 sync更新软件树
+* port upgrade		#更新软件,默认一起更新它依赖的所有软件,如果想不更新它依赖的软件,使用 -n 参数,默认不删除旧软件版本,只是使旧软件变成无效状态,如果想要一起删除旧软件,使用 －u 参数
+
+        port upgrade gnome
+        port -n upgrade gnome
+        更新所有的可更新软件
+        sudo port upgrade outdated
+        更新软件同时删除旧版本软件
+        port -u upgrade vile
+* port dependents	#查看哪些软件时依赖与这个软件的.删除一个软件时候，最好先执行一下这个命令
 
 
+##### 删除MacPorts
 
+```
+sudo port -f uninstall installed
 
+sudo rm -rf
 
+/opt/local
 
+/Applications/DarwinPorts
+
+/Applications/MacPorts
+
+/Library/LaunchDaemons/org.macports.*
+
+/Library/Receipts/DarwinPorts*.pkg
+
+/Library/Receipts/MacPorts*.pkg
+
+/Library/StartupItems/DarwinPortsStartup
+
+/Library/Tcl/darwinports1.0
+
+/Library/Tcl/macports1.0
+
+~/.macports
+```
