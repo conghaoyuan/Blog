@@ -194,7 +194,7 @@ Ubuntu中的高级包管理方法apt-get:
 
 -------------------
 
-<div class="message">
+<div class="message" color="#ffffff">
 UNIX分为两大类，分别是由厂商支持的systemV 系统和BSD系统，具体有：
 SYSTEM V 系统：<br/>
 <a href="http://baike.baidu.com/view/3247518.htm" target="_blank">SCO UNIX</a> &nbsp;&nbsp;&nbsp;&nbsp;
