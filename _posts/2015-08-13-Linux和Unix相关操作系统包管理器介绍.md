@@ -4,11 +4,12 @@ title: Linux和Unix 相关操作系统包管理器介绍
 categories:
 - 随笔
 ---
+
+# Linux
 <div class="message">
 在 GNU/Linux( 以下简称 Linux) 操作系统中，RPM 和 DPKG 为最常见的两类软件包管理工具，他们分别应用于基于 RPM 软件包的 Linux 发行版本和 DEB 软件包的 Linux 发行版本。软件包管理工具的作用是提供在操作系统中安装，升级，卸载需要的软件的方法，并提供对系统中所有软件状态信息的查询。
 RPM 全称为 Redhat Package Manager，最早由 Red Hat 公司制定实施，随后被 GNU 开源操作系统接受并成为很多 Linux 系统 (RHEL) 的既定软件标准。与 RPM 进行竞争的是基于 Debian 操作系统 (UBUNTU) 的 DEB 软件包管理工具－ DPKG，全称为 Debian Package，功能方面与 RPM 相似。二者之具体比较不在本文范围之内。
 </div>
-# Linux
 -------------
 ## <a href="http://baike.baidu.com/view/1139590.htm" target="_blank">RedHat</a>&&<a href="http://baike.baidu.com/view/26404.htm" target="_blank">CentOS</a>
 
@@ -194,6 +195,9 @@ Ubuntu中的高级包管理方法apt-get:
 
 -------------------
 
+
+# Unix
+
 <div>
 UNIX分为两大类，分别是由厂商支持的systemV 系统和BSD系统，具体有：<br/>
 SYSTEM V 系统：<br/>
@@ -209,7 +213,6 @@ BSD系统：<br/>
 <a href="http://baike.baidu.com/view/24778.htm" target="_blank">APPle UNIX(MAC OS bsd内核）</a><br/>
 开发中用到最多的便是Mac os X ,故只介绍mac的包管理器。<b>Homebrew</b>&&<b>Macports</b>
 </div>
-# Unix
 -------------
 
 ## <a href="http://baike.baidu.com/view/24778.htm" target="_blank">Mac</a>
