@@ -48,8 +48,8 @@ html {
 }
 
 body {
-  color: #000;
-  background-color: #fff;
+  color: #fff;
+  background-color: #ddd;
   -webkit-text-size-adjust: 100%;
       -ms-text-size-adjust: 100%;
 }
