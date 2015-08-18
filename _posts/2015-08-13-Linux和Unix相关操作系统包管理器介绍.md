@@ -275,8 +275,8 @@ rm -rf ~/Library/Caches/Homebrew   #删除缓存
 
 ##### 安装
 
-1.访问官方网站[http://www.macports.org/install.php]，下载相关系统dmg安装,一步一步即可。  
-2.通过source安装,可打开[http://distfiles.macports.org/MacPorts/]查看macports版本信息，选定一个版本安装即可。如下载最新版本2.3.3
+1.访问官方网站<http://www.macports.org/install.php>，下载相关系统dmg安装,一步一步即可。  
+2.通过source安装,可打开<http://distfiles.macports.org/MacPorts/>查看macports版本信息，选定一个版本安装即可。如下载最新版本2.3.3
 
 	wget http://distfiles.macports.org/MacPorts/MacPorts-2.3.3.tar.gz
 	tar zxvf MacPorts-2.3.3.tar.gz
