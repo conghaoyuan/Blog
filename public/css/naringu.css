@@ -668,6 +668,8 @@ a.pagination-item:hover {
   top:120px;
   right:10px;
   z-index:1000;
+  background-color: #113B3B;
+  background-border:#113B3B;
   background:transparent;
   border:none;
 }
