@@ -18,7 +18,7 @@ I had been a master at this university :
 - [Qingdao Agriculture University ](http://www.qau.edu.cn/)
 - Major in Computer Science and Technology
 
-## Ping me!
+### Ping me!
 
 If you have any questions, comments, or would just like to __PING ME__, please don't hesitate to  [send me an email](mailto:conghaoyuan@gmail.com). 
 
