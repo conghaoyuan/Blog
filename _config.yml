@@ -17,7 +17,7 @@ baseurl:             /
 paginate:            7
 suibi:               随笔 
 php:                 PHP
-java:				 java
+java:	             Java
 Mysql:               Mysql
 suanfa:              算法
 iosmac:				 ios|os x
