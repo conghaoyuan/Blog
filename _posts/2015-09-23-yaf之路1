@@ -1,0 +1,54 @@
+---
+layout: post
+title: yaf之路(一) mac yaf 安装
+categories:
+- PHP
+---
+
+
+### 1 下载yaf最新源代码
+
+	wget http://pecl.php.net/get/yaf-2.3.5.tgz
+
+### 2 解压
+
+	tar zxvf yaf-2.3.5.tgz && cd yaf-2.3.5
+
+### 3 安装yaf扩展
+	
+	phpize    //phpize是用来扩展php扩展模块的，通过phpize可以建立php的外挂模块（memcached等） ,一般都经过下边几个步骤
+	./configure
+	make
+	make test
+	sudo make install
+
+注意：mac上需要安装autoconf，如果没有安装则提示如下图，可通过brew install autoconf 安装
+	
+<image width="600" src="/images/15923/yaf1.png">
+
+安装完成后执行phpize,提示如图：
+
+<image width="600" src="/images/15923/yaf2.png">
+
+make编译时可能因为缺少pcre.h而出现此错误
+
+<image width="600" src="images/15923/yaf5.png">
+
+老办法，brew install pcre 安装pcre，安装完执行make
+
+<image width="600" src="images/15923/yaf9.png">
+
+
+### 4 php.ini 添加yaf.so
+	
+	vi /etc/php.ini
+	# add yaf.so
+	extension=yaf.so
+
+### 5 安装完成后重启apache 打开phpinfo查看
+
+	sudo apachectl restart
+	
+<image width="600" src="/images/15923/yaf11.png">
+
+则yaf扩展安装成功
