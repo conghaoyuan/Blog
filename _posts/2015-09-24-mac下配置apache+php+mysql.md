@@ -190,3 +190,40 @@ sudo launchctl load -w /Library/LaunchDaemons/com.mysql.mysql.plist
 
 -----------------------
 ## 4 phpMyAdmin的安装
+
+```
+Mac 用户需要注意若您的系统版本低于 Mac OS X，StuffIt 会把文件解压为 Mac 格式。因为 PHP 似乎不支持 Mac 式的换行符（“\r”），所以在将文件上传到服务器之前您必须用 BBEdit 将所有 phpMyAdmin 脚本重新保存为 Unix 格式。
+
+```
+1. 从 phpmyadmin.net 下载页选择一个合适的版本。有些版本只有英语，有些包含了所有语言。假设您选择了一个名字类似于 phpMyAdmin-x.x.x -all-languages.tar.gz 的版本。
+2. Ensure you have downloaded a genuine archive, see Verifying phpMyAdmin releases.
+3. 解开这个压缩包（包括子目录）：在您网站服务器的文档根目录中执行 tar -xzvf phpMyAdmin_x.x.x-all-languages.tar.gz。如果您不能直接访问服务器，请先把这些文件解压到您自己的电脑上，等完成第 4 步之后，再通过 ftp 等方式将文件上传到您的网站服务器。
+4. 确保所有的脚本都有正确的所有者（若 PHP 运行于安全模式，脚本间所有者的不同将会导致问题）。参见 4.2 What’s the preferred way of making phpMyAdmin secure against evil access? 和 1.26 I just installed phpMyAdmin in my document root of IIS but I get the error “No input file specified” when trying to run phpMyAdmin.。
+5. 现在开始设置您的安装。两种方法。以前，用户只能手动编辑一份 config.inc.php 文件，但现在我们为那些喜欢使用图形界面安装的用户提供了一个向导式的安装脚本。手动创建 config.inc.php 仍然是一个快速安装的方法且一些高级功能也需要手动编辑该文件。
+6. 配置config.inc.php文件
+
+
+```
+<?
+php
+$cfg['blowfish_secret'] = 'ba17c1ec07d65003';  // use here a value of your choice
+
+$i=0;
+$i++;
+$cfg['Servers'][$i]['auth_type']     = 'cookie';
+?>
+
+或者，若您不想每次都登录：
+
+<?php
+
+$i=0;
+$i++;
+$cfg['Servers'][$i]['user']          = 'root';
+$cfg['Servers'][$i]['password']      = 'cbb74bc'; // use here your password
+$cfg['Servers'][$i]['auth_type']     = 'config';
+?>
+```
+注意：把mysql服务打开
+
+其实具体详细的配置就看人家phpmyadmin的文档吧 ，比我们的都详细 [连接](https://phpmyadmin-chinese-china.readthedocs.org/en/latest/setup.html)
