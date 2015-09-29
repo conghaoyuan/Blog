@@ -227,3 +227,5 @@ $cfg['Servers'][$i]['auth_type']     = 'config';
 注意：把mysql服务打开
 
 其实具体详细的配置就看人家phpmyadmin的文档吧 ，比我们的都详细 [连接](https://phpmyadmin-chinese-china.readthedocs.org/en/latest/setup.html)
+
+另外给大家推荐个好用的桌面版工具，如windows下的navigate 。[Sequel Pro](http://www.sequelpro.com/)
