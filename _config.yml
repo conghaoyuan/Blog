@@ -20,7 +20,8 @@ php:                 PHP
 java:	             Java
 Mysql:               Mysql
 suanfa:              算法
-iosmac:				 ios|os x
+iosmac:	             ios|os x
+kuangjia:	     框架
 
 # About/contact
 author:
