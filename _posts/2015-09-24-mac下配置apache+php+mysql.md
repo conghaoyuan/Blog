@@ -188,7 +188,21 @@ sudo launchctl load -w /Library/LaunchDaemons/com.mysql.mysql.plist
 
 这样mysql就ok了。。。。
 
+5, 卸载mysql
+
+	sudo rm /usr/local/mysql
+	sudo rm -rf /usr/local/mysql*
+	sudo rm -rf /Library/StartupItems/MySQLCOM
+	sudo rm -rf /Library/PreferencePanes/My*
+	vim /etc/hostconfig  (and removed the line MYSQLCOM=-YES-)
+	rm -rf ~/Library/PreferencePanes/My*
+	sudo rm -rf /Library/Receipts/mysql*
+	sudo rm -rf /Library/Receipts/MySQL*
+	sudo rm -rf /var/db/receipts/com.mysql.*
+	
 -----------------------
+
+
 ## 4 phpMyAdmin的安装
 
 ```
