@@ -9,14 +9,13 @@ layout: page
 
 Hello, my name is __conghaoyuan__ and I’m a __PHP RD CODER__ with equal parts interest in business, management development, and writing.
 
-I am working at the Company in : 
+I was worked at the Company in : 
 
 - [meilishuo](http://www.meilishuo.com)
 
-I had been a master at this university :
+and now I'm a graduate of Beijing Information & Technology University.
 
-- [Qingdao Agriculture University ](http://www.qau.edu.cn/)
-- Major in Computer Science and Technology
+if you want give me a job
 
 ### Ping me!
 
