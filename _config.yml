@@ -11,7 +11,7 @@ relative_permalinks: true
 # Setup
 title:               PHPCoder
 tagline:             'a coder desire for freedom'
-description:         'just do it   <b><font color="#ffffff">袁从灏</font></b>'
+description:         'just do it   $nbsp;$nbsp;$nbsp;$nbsp;<b><font color="#ffffff">袁从灏</font></b>'
 url:                 http://ferdbi.com
 baseurl:             /
 paginate:            7
