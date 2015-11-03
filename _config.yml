@@ -16,6 +16,7 @@ url:                 http://ferdbi.com
 baseurl:             /
 paginate:            7
 suibi:               随笔 
+Linux:		     Linux
 php:                 PHP
 java:	             Java
 Mysql:               Mysql
