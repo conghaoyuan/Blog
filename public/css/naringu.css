@@ -774,7 +774,7 @@ a.pagination-item:hover {
     content: '\20';
     width: 150px;
     height: 200px;
-    border: 5px solid #000;
+    border: 5px solid #ff0000;
     border-radius: 0 82% 14% 73%;
     margin-top: -133px;
     display: block;
