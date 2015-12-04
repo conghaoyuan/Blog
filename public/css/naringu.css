@@ -786,7 +786,7 @@ a.pagination-item:hover {
     margin-left: 140px;
     border-right: 3px solid transparent;
     overflow: hidden;
-    background: #f9f8f4;
+    background: transparent;
     position: relative;
     border-radius: 9px 8px 10px 7px;
     width: 101px;
@@ -799,7 +799,7 @@ a.pagination-item:hover {
     border-radius: 100% 0 100% 0;
     border: 5px solid #000;
     display: block;
-    background: #f9f8f4;
+    background: transparent;
     -webkit-transform: rotate(10deg);
     top: -14px;
     left: 1px;
@@ -812,7 +812,7 @@ a.pagination-item:hover {
     border-radius: 100% 0 100% 0;
     border: 5px solid #000;
     display: block;
-    background: #f9f8f4;
+    background: transparent;
     -webkit-transform: rotate(190deg);
     top: 16px;
     left: 1px;
@@ -828,13 +828,13 @@ a.pagination-item:hover {
     margin-top: -53px;
     border-radius: 13px;
     z-index: 2;
-    background: #f9f8f4;
+    background: transparent;
 }
 .logo-whirlybird .tail-e::after{
     content: '\20';
     width: 10px;
     height: 10px;
-    background: #f9f8f4;
+    background: transparent;
     display: block;
     margin-top: 29px;
     margin-left: -6px;
