@@ -698,6 +698,7 @@ a.pagination-item:hover {
     top: 300px;
     right: 20px;
     position: fixed;
+    background: transparent;
 }
 .logo-whirlybird .hangglider{
     position: relative;
