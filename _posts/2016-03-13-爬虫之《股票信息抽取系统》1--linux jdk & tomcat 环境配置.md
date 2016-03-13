@@ -2,7 +2,7 @@
 layout: post
 title: 爬虫之《股票信息抽取系统》1--linux jdk & tomcat 环境配置
 categories:
-- JAVA
+- Java
 ---
 
 <div class="message">
