@@ -1,5 +1,5 @@
 # Dependencies
-markdown:            redcarpet
+markdown:            kramdown
 highlighter:         pygments
 
 # Permalinks
@@ -16,15 +16,15 @@ url:                 http://ferdbi.com
 baseurl:             /
 paginate:            7
 suibi:               随笔 
-Linux:		     Linux
+Linux:		           Linux
 php:                 PHP
-java:	             Java
+java:	               Java
 Mysql:               Mysql
 suanfa:              算法
 iosmac:	             ios|os x
-kuangjia:	     框架
-lunwen:		     论文
-machine:	     机器学习
+kuangjia:	           框架
+lunwen:		           论文
+machine:	           机器学习
 
 # About/contact
 author:
