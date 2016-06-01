@@ -9,7 +9,7 @@ highlighter:         rouge
 #relative_permalinks: true
 
 # Setup
-title:               PHPCoder
+title:               CrazyCoder
 tagline:             'a coder desire for freedom'
 description:         'just do it   &nbsp;&nbsp;&nbsp;&nbsp;<b><font color="#ffffff">袁从灏</font></b>'
 url:                 http://ferdbi.com
@@ -43,5 +43,5 @@ facebook:			https://www.facebook.com/profile.php?id=100009305848329
 
 # Theme Author (Please don't edit this line cause of MIT LICENSE rules)
 theme:
-creator:			PHP Coder
+creator:			Crazy Coder
 codename:			conghaoyuan
