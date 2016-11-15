@@ -9,7 +9,7 @@ categories:
   由于最近在进行关于Hadoop的学习，开始重新搭建一套Hadoop的环境，和之前自己搭建的环境的区别在于操作系统的版本，本次采用的为CentOS7.2的版本，7相对于6的版本改动较大。一些命令都不太一样，其中在其内核中加了Docker，因此在后期装相关软件时不需要重新安装，应该说也是Hadoop生态体系后期迁移的一个重点。故本次搭建采用CentOS7.2的最新版本。
 </div>
 
-### 1.部署环境及相关版本软件
+## 1.部署环境及相关版本软件
 
 * 操作系统：MAC OS X EI Caption 10.11.6  
 * CPU：2.7 GHz Intel Core i5
@@ -24,7 +24,7 @@ categories:
     mongodb-linux-x86_64-rhel70-3.2.10.tgz    redis-3.2.5.tar.gz
 
 
-### 2.CentOS7 安装
+## 2.CentOS7 安装
 
 PD这个软件在mac上算是特别好用的虚拟机了，用的当然是破解版的，目前有PD10的破解版，建议别升级，升级后不能用，也别将mac 升级成 mac sierra，升级后很多破解版的软件无法使用，吐槽一下苹果新版的MBP，那叫一个讽刺，自己的手机无法直接连接自己的电脑。
 
@@ -43,7 +43,7 @@ CentOS7安装有个好处为配置与安装分离，安装完基础的软件包�
 ------------------
 
 	
-#####(1).设置防火墙
+### (1).设置防火墙
 在CentOS6.*的版本及以前，service iptables stop
 在CentOS7中
 	
@@ -51,7 +51,7 @@ CentOS7安装有个好处为配置与安装分离，安装完基础的软件包�
 	systemctl disable firewalld.service   #禁止firewall开机启动
 	
 即可，具体详细设置可看笔记[CentOS7防火墙设置]()
-#####(2).hostname设置
+### (2).hostname设置
 查看当前机器名：
 	
 	hostname
@@ -65,7 +65,7 @@ CentOS7安装有个好处为配置与安装分离，安装完基础的软件包�
 	添加：Master.Hadoop
 	保存退出:wq
 
-#####(3).配置ip
+###(3).配置ip
 CentOS6.*查看ip地址命令为：`ifconfig`，CentOS7修改为：`ip addr`
 因为所用PD虚拟机的网络设置为共享网络，故只需要在eth0配置文件将开机启动设置为`yes`即可，因每增加一台虚拟机，PD变会将ip进行自增，且下次开机不会改变。
 	
