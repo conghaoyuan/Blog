@@ -87,5 +87,45 @@ CentOS6.*查看ip地址命令为：`ifconfig`，CentOS7修改为：`ip addr`
 以上为CentOS7的安装及其配置，接下来为SSH无密码登录配置。
 -----------------
 
-## 3.SSH无密码登录
+## 3.SSH无密码验证配置
+
+<div class="message">
+  Hadoop运行过程中需要管理远端Hadoop守护进程，在Hadoop启动以后，NameNode是通过SSH（Secure Shell）来启动和停止各个DataNode上的各种守护进程的。这就必须在节点之间执行指令的时候是不需要输入密码的形式，故我们需要配置SSH运用无密码公钥认证的形式，这样NameNode使用SSH无密码登录并启动DataName进程，同样原理，DataNode上也能使用SSH无密码登录到NameNode。
+</div>
+
+默认安装好的系统上已经安装了ssh和rsync，可以通过以下命令查看：
+
+	rpm –qa | grep openssh
+	rpm –qa | grep rsync
+	如果提示没有安装，则需安装，如果安装跳过该步
+	yum install ssh   #安装SSH协议
+	yum install rsync  #rsync是一个远程数据同步工具，可通过LAN/WAN快速同步多台主机间的文件）
+	systemctl restart  sshd.service  #启动服务
+
+<div class="message">
+  `SSH无密码原理`：Master（NameNode | JobTracker）作为客户端，要实现无密码公钥认证，连接到服务器Salve（DataNode | Tasktracker）上时，需要在Master上生成一个密钥对，包括一个公钥和一个私钥，而后将公钥复制到所有的Slave上。当Master通过SSH连接Salve时，Salve就会生成一个随机数并用Master的公钥对随机数进行加密，并发送给Master。Master收到加密数之后再用私钥解密，并将解密数回传给Slave，Slave确认解密数无误之后就允许Master进行连接了。这就是一个公钥认证过程，其间不需要用户手工输入密码。重要过程是将客户端Master复制到Slave上。
+  分为两部分：`Master无密码登录所有的Slave` 和  `所有的Slave无密码登录到Master`    
+</div>
+
+	这句话一定要看，一定要看，因为关系到配置ssh效率的问题。
+	原理说白了就是：需要将Master的公钥id_rsa.pub追加到所有的Slave的authorized_keys里边，将所有的Slave中的id_rsa.pub追加到Master的authorized_keys里边。
+	因此先配置Master和所有的Slave机器的sshd_config
+	vi /etc/ssh/sshd_config
+	将下边三个选项进行配置
+	RSAAuthentication yes # 启用 RSA 认证
+	PubkeyAuthentication yes # 启用公钥私钥配对认证方式
+	AuthorizedKeysFile .ssh/authorized_keys # 公钥文件路径（和上面生成的文件同）
+	然后分别在所有机器的hadoop用户的~/目录下分别建立.ssh文件夹
+	~/ 目录为登录hadoop用户后，直接cd下的目录
+
+### 1).Master无密码登录所有的Slave
+
+	1. 在Master上生成密码对
+	
+	
+
+	2. 
+
+### 2).Slave无密码登录所有的Master
+
 
