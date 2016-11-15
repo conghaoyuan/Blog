@@ -85,7 +85,3 @@ CentOS6.*查看ip地址命令为：`ifconfig`，CentOS7修改为：`ip addr`
 -----------------
 
 
-
-
-	
-
