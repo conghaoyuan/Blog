@@ -171,4 +171,55 @@ CentOS6.*查看ip地址命令为：`ifconfig`，CentOS7修改为：`ip addr`
 
 ### 2).Slave无密码登录所有的Master
 
+和Master无密码登录所有Slave原理一样，就是把Slave的公钥追加到Master的".ssh"文件夹下的"authorized_keys"中，记得是追加`（>>）`。
+为了说明情况，我们现在就以"Slave1.Hadoop"无密码登录"Master.Hadoop"为例，进行一遍操作，也算是巩固一下前面所学知识，剩余的"Slave2.Hadoop"和"Slave3.Hadoop"就按照这个示例进行就可以了。
+
+1.首先创建"Slave1.Hadoop"自己的公钥和私钥，并把自己的公钥追加到"authorized_keys"文件中。用到的命令如下：
+
+	ssh-keygen -t rsa -P ''
+	回车
+	回车
+
+2.查看生成的公钥和私钥
+
+	cd 
+	cd .ssh
+	ll
+
+3.将公钥id_rsa.pub发送到Master
+
+	scp id_rsa.pub hadoop@10.211.55.13:~/
+	注意：这里发送到了~/目录下，没有到.ssh目录下，因为Master .ssh 目录下已经有一个id_rsa.pub，为Master之前生成的，因此不能将其替换。
+
+4.登录到Master，将公钥追加到authorized_keys中，并修改其权限
+	
+	cat ~/id_rsa.pub >> ~/.ssh/authorized_keys
+	chmod 600 ~/.ssh/authorized_keys
+	rm ~/id_rsa.pub     #追加完成后要删除id_rsa.pub
+
+5.验证Slave无密码登录到Master
+在Slave机器上
+
+	ssh hadoop@10.211.55.13      
+	注：本人机器 55.13为Master   55.14为Slave1  55.15为Slave2
+
+至此，SSH无密码通信已经配置完毕，我们可以发现一个规律，需要频繁登录Master和Slave上进行发送id_rsa.pub，为了简化，其实可以先将每一台的公钥生成，然后发送到Master中，发送的过程中可以起一个别的名字，别重名就行，然后在Master中统一将公钥追加到authorized key中。这样Master中算是有一份比较全的Slave   key了，再将这一份发送到所有的Slave节点，变省去了很多发送的步骤。
+
+如：
+
+	Slave1
+	scp ~/.ssh/id_rsa.pub hadoop@Master.Hadoop:~/.ssh/id_rsa1.pub
+	Slave2
+	scp ~/.ssh/id_rsa.pub hadoop@Master.Hadoop:~/.ssh/id_rsa2.pub
+	Master
+	cat ~/.ssh/id_rsa1.pub >> ~/.ssh/authorized_keys
+	cat ~/.ssh/id_rsa2.pub >> ~/.ssh/authorized_keys
+	然后将authorized_keys 发送到所有的Slave
+	scp ~/.ssh/authorized_keys hadoop@Slave1.Hadoop:~/.ssh
+	scp ~/.ssh/authorized_keys hadoop@Slave2.Hadoop:~/.ssh
+	并确保Slave上的authorized_keys权限为600即可
+
+本章结束，下一章，配置jdk以及hadoop
+
+
 
