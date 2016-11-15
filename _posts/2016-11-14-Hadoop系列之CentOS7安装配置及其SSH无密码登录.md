@@ -51,6 +51,8 @@ CentOS7安装有个好处为配置与安装分离，安装完基础的软件包�
 	systemctl disable firewalld.service   #禁止firewall开机启动
 	
 即可，具体详细设置可看笔记[CentOS7防火墙设置]()
+
+
 ### (2).hostname设置
 查看当前机器名：
 	
@@ -65,7 +67,8 @@ CentOS7安装有个好处为配置与安装分离，安装完基础的软件包�
 	添加：Master.Hadoop
 	保存退出:wq
 
-###(3).配置ip
+
+### (3).配置ip
 CentOS6.*查看ip地址命令为：`ifconfig`，CentOS7修改为：`ip addr`
 因为所用PD虚拟机的网络设置为共享网络，故只需要在eth0配置文件将开机启动设置为`yes`即可，因每增加一台虚拟机，PD变会将ip进行自增，且下次开机不会改变。
 	
@@ -85,10 +88,3 @@ CentOS6.*查看ip地址命令为：`ifconfig`，CentOS7修改为：`ip addr`
 -----------------
 
 
-<<<<<<< HEAD
-=======
-
-
-	
-
->>>>>>> aa11b4012fed4acdfaa2c912d767ce2143d1cc7a
