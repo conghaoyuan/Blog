@@ -40,7 +40,7 @@ CentOS7安装有个好处为配置与安装分离，安装完基础的软件包�
 <img width="600px" src="/images/161114/16111407.png"/>
 
 以上为CentOS7安装完毕，然后就可以重启登录了。第一次登录可用root用户登录并且设置。
-------------------
+----------------------
 
 	
 ### (1).设置防火墙
@@ -59,7 +59,7 @@ CentOS7安装有个好处为配置与安装分离，安装完基础的软件包�
 	hostname
 
 默认为：
-<img width="600px" src="/images/161114/16111408.png"/>
+<img width="200px" src="/images/161114/16111408.png"/>
 修改`/etc/hostname`文件
 	
 	vi /etc/hostname
@@ -85,7 +85,7 @@ CentOS6.*查看ip地址命令为：`ifconfig`，CentOS7修改为：`ip addr`
 	10.211.55.15    slave2
 
 以上为CentOS7的安装及其配置，接下来为SSH无密码登录配置。
------------------
+-------------------
 
 ## 3.SSH无密码验证配置
 
@@ -103,7 +103,7 @@ CentOS6.*查看ip地址命令为：`ifconfig`，CentOS7修改为：`ip addr`
 	systemctl restart  sshd.service  #启动服务
 
 <div class="message">
-  `SSH无密码原理`：Master（NameNode | JobTracker）作为客户端，要实现无密码公钥认证，连接到服务器Salve（DataNode | Tasktracker）上时，需要在Master上生成一个密钥对，包括一个公钥和一个私钥，而后将公钥复制到所有的Slave上。当Master通过SSH连接Salve时，Salve就会生成一个随机数并用Master的公钥对随机数进行加密，并发送给Master。Master收到加密数之后再用私钥解密，并将解密数回传给Slave，Slave确认解密数无误之后就允许Master进行连接了。这就是一个公钥认证过程，其间不需要用户手工输入密码。重要过程是将客户端Master复制到Slave上。
+  SSH无密码原理：Master（NameNode | JobTracker）作为客户端，要实现无密码公钥认证，连接到服务器Salve（DataNode | Tasktracker）上时，需要在Master上生成一个密钥对，包括一个公钥和一个私钥，而后将公钥复制到所有的Slave上。当Master通过SSH连接Salve时，Salve就会生成一个随机数并用Master的公钥对随机数进行加密，并发送给Master。Master收到加密数之后再用私钥解密，并将解密数回传给Slave，Slave确认解密数无误之后就允许Master进行连接了。这就是一个公钥认证过程，其间不需要用户手工输入密码。重要过程是将客户端Master复制到Slave上。
   分为两部分：`Master无密码登录所有的Slave` 和  `所有的Slave无密码登录到Master`    
 </div>
 
@@ -115,16 +115,57 @@ CentOS6.*查看ip地址命令为：`ifconfig`，CentOS7修改为：`ip addr`
 	RSAAuthentication yes # 启用 RSA 认证
 	PubkeyAuthentication yes # 启用公钥私钥配对认证方式
 	AuthorizedKeysFile .ssh/authorized_keys # 公钥文件路径（和上面生成的文件同）
-	然后分别在所有机器的hadoop用户的~/目录下分别建立.ssh文件夹
+	然后分别在所有机器的hadoop用户的~/目录下分别建立.ssh文件夹并将其权限设为700 chmod 700 .ssh 
 	~/ 目录为登录hadoop用户后，直接cd下的目录
 
 ### 1).Master无密码登录所有的Slave
 
-	1. 在Master上生成密码对
-	
-	
+1.在Master上生成密码对
+在Master节点上执行：
 
-	2. 
+	ssh-keygen -t rsa -P ''
+
+这条命是生成其无密码密钥对，询问其保存路径时直接回车采用默认路径。生成的密钥对：id_rsa和id_rsa.pub，默认存储在"/home/hadoop/.ssh"目录下
+<img src="/images/161115/16111501.png"/>
+查看"/home/hadoop/"下是否有".ssh"文件夹，且".ssh"文件下是否有两个刚生产的无密码密钥对。
+<img src="/images/161115/16111502.png"/>
+2.接着在Master节点上做如下配置，把id_rsa.pub追加到授权的key里面去。
+
+	cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+
+<img src="/images/161115/16111503.png"/>
+3.修改文件"authorized_keys"权限
+权限的设置非常重要，因为不安全的设置安全设置，会让你不能使用RSA功能
+
+	chmod 600 ~/.ssh/authorized_keys
+
+<img src="/images/161115/16111504.png"/>
+4.使用hadoop普通用户验证是否成功
+
+	ssh localhost
+
+<img src="/images/161115/16111505.png"/>
+
+从上图中得知无密码登录本级已经设置完毕，接下来的事儿是把公钥复制所有的Slave机器上。使用下面的命令格式进行复制公钥：
+
+	scp ~/.ssh/id_rsa.pub 远程用户名@远程服务器IP:~/
+	例如：
+	scp ~/.ssh/id_rsa.pub hadoop@10.211.55.14:~/.ssh
+	scp ~/.ssh/id_rsa.pub hadoop@10.211.55.15:~/.ssh
+
+然后分别登录Slave1和Slave2两台机器，将`id_rsa.pub` 追加到`authorized_keys`中，并将其权限设置为`600`后删除id_rsa.pub
+
+	cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+	chmod 600 ~/.ssh/authorized_keys
+	rm ~/.ssh/id_rsa.pub
+
+5.在Master上hadoop用户登录Slave上的Hadoop用户验证是否成功
+
+	ssh hadoop@10.211.55.14
+	ssh hadoop@10.211.55.15
+<img src="/images/161115/16111506.png"/>
+不在提示让输入密码，表示Master登录所有Slave节点ssh配置成功。
+
 
 ### 2).Slave无密码登录所有的Master
 
