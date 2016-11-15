@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Hadoop系列之JDK和Hadoop安装配置
+title: Hadoop系列之（二）JDK和Hadoop安装配置
 categories:
 - 大数据
 ---

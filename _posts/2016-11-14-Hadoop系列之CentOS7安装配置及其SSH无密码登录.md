@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Hadoop系列之CentOS7安装配置及其SSH无密码登录
+title: Hadoop系列之（一）CentOS7安装配置及其SSH无密码登录
 categories:
 - 大数据
 ---
