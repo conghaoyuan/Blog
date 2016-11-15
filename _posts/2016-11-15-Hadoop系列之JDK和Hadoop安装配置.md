@@ -318,5 +318,5 @@ Slave上查看：
 <img src="/images/161115/hadoopweb8088.jpg" />
 <img src="/images/161115/hadoopweb50070.jpg" />
 
-至此，hadoop配置完成，下一步配置zookeeper+hbase
+至此，hadoop配置完成，下一步配置Zookeeper+Hbase+Hive
 
