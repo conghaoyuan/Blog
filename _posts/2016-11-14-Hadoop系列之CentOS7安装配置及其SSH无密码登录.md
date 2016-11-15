@@ -59,7 +59,7 @@ CentOS7安装有个好处为配置与安装分离，安装完基础的软件包�
 	hostname
 
 默认为：
-<img width="600px" src="/images/161114/16111407.png"/>
+<img width="600px" src="/images/161114/16111408.png"/>
 修改`/etc/hostname`文件
 	
 	vi /etc/hostname
@@ -87,4 +87,5 @@ CentOS6.*查看ip地址命令为：`ifconfig`，CentOS7修改为：`ip addr`
 以上为CentOS7的安装及其配置，接下来为SSH无密码登录配置。
 -----------------
 
+## 3.SSH无密码登录
 
