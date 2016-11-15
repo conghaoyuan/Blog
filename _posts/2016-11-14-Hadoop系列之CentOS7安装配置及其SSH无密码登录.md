@@ -84,6 +84,15 @@ CentOS6.*查看ip地址命令为：`ifconfig`，CentOS7修改为：`ip addr`
 	10.211.55.14    slave1
 	10.211.55.15    slave2
 
+### (4).hosts配置
+
+	vi /etc/hosts
+	添加
+	10.211.55.13    Master.Hadoop
+	10.211.55.14    Slave1.Hadoop
+	10.211.55.15    Slave2.Hadoop
+	:wq
+
 以上为CentOS7的安装及其配置，接下来为SSH无密码登录配置。
 -------------------
 
