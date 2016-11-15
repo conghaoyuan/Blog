@@ -55,21 +55,167 @@ categories:
 
 ### 1).Hadoop解压安装
 
+将`/usr/local/src/hadoop-2.7.1.tar.gz`拷贝到`/usr`下并将其解压，并将其分配给hadoop用户读的权限，需用root用户登录
+
+	cp /usr/local/src/hadoop-2.7.1.tar.gz /usr
+	tar zxvf hadoop-2.7.1.tar.gz
+	mv hadoop-2.7.1.tar.gz hadoop 
+	rm hadoop-2.7.1.tar.gz
+	chown -R hadoop:hadoop hadoop/
+
+<img width="600" src="/images/161115/hadoopzxvf.png" />	
+<img width="600" src="/images/161115/hadooplist.png" />	
+
 ### 2).Hadoop配置
+
+Hadoop 所有的配置文件全部在`/usr/hadoop/etc/hadoop`下，进行相应的配置时可用`vi`编辑器进行打开配置。其中主要配置其中的5歌文件，如下所示：
+
+<img width="600" src="/images/161115/hadoopetc.png" />	
 
 #### (1).第一步，hadoop-env.sh配置
 
+在24行
+
+	# The java implementation to use.
+	# export JAVA_HOME=${JAVA_HOME}
+	export JAVA_HOME=/usr/java/jdk1.8.0_111	
+
+如下所示：
+<img width="600" src="/images/161115/hadoopenv.png" />	
+
 #### (2).第二步，core-site.xml配置
+
+	<configuration>
+        <property>
+        	<name>fs.defaultFS</name>
+			<value>hdfs://Master.Hadoop:9000</value>
+        </property>
+        <property>
+			<name>hadoop.tmp.dir</name>
+            <value>file:/home/hadoop/hadoop-2.7.1/tmp</value>
+        </property>
+        <property>
+			<name>io.file.buffer.size</name>
+            <value>131702</value>
+        </property>
+	</configuration>
+
+如图所示：
+
+<img width="600" src="/images/161115/hadoopcore-site.png" />	
 
 #### (3).第三步，hdfs-site.xml配置
 
+	<configuration>
+        <property>
+			<name>dfs.namenode.name.dir</name>
+            <value>/home/hadoop/hadoop-2.7.1/hdfs/name</value>
+        </property>
+        <property>
+            <name>dfs.namenode.data.dir</name>
+            <value>/home/hadoop/hadoop-2.7.1/hdfs/data</value>
+        </property>
+        <property>
+            <name>dfs.replication</name>
+            <value>2</value>
+        </property>
+        <property>
+            <name>dfs.namenode.secondary.http-address</name>
+            <value>Master.Hadoop:9001</value>
+        </property>
+        <property>
+            <name>dfs.webhdfs.enabled</name>
+            <value>true</value>
+        </property>
+        <property>
+            <name>dfs.permissions</name>
+            <value>false</value>
+        </property>
+	</configuration>
+
+如图所示：
+<img width="600" src="/images/161115/hadoophdfs-site.png" />	
+
 #### (4).第四步，mapred-site.xml配置
+
+需要将`mapred-site.xml.template`重命名为`mapred-site.xml`
+
+	<configuration>
+        <property>
+			<name>mapreduce.framework.name</name>
+            <value>yarn</value>
+        </property>
+        <property>
+            <name>mapreduce.jobhistory.address</name>
+            <value>Master.Hadoop:10020</value>
+        </property>
+        <property>
+            <name>mapreduce.jobhistory.webapp.address</name>
+            <value>Master.Hadoop:19888</value>
+        </property>
+	</configuration>
+
+如图所示：
+<img width="600" src="/images/161115/hadoopmapred-site.png" />	
 
 #### (5).第五步，yarn-site.xml配置
 
+	<configuration>
+		<!-- Site specific YARN configuration properties -->
+        <property>
+        	<name>yarn.nodemanager.aux-services</name>
+            <value>mapreduce_shuffle</value>
+        </property>
+        <property>
+			<name>yarn.nodemanager.auxservices.mapreduce.shuffle.class</name>
+            <value>org.apache.hadoop.mapred.ShuffleHandler</value>
+        </property>
+        <property>
+            <name>yarn.resourcemanager.address</name>
+            <value>Master.Hadoop:8032</value>
+        </property>
+        <property>
+            <name>yarn.resourcemanager.scheduler.address</name>
+            <value>Master.Hadoop:8030</value>
+        </property>
+        <property>
+            <name>yarn.resourcemanager.resource-tracker.address</name>
+			<value>Master.Hadoop:8031</value>
+        </property>
+        <property>
+            <name>yarn.resourcemanager.admin.address</name>
+            <value>Master.Hadoop:8033</value>
+        </property>
+        <property>
+            <name>yarn.resourcemanager.webapp.address</name>
+            <value>Master.Hadoop:8088</value>
+        </property>
+        <property>
+            <name>yarn.nodemanager.resource.memory-mb</name>
+            <value>2048</value>
+        </property>
+	</configuration>
+
+如图所示：
+<img width="600" src="/images/161115/hadoopyarn-site1.png" />	
+<img width="600" src="/images/161115/hadoopyarn-site2.png" />
+
 #### (6).第六步，slaves配置
 
+	Slave1.Hadoop
+	Slave2.Hadoop
+
+如图所示
+<img width="600" src="/images/161115/hadoopslaves.png" />	
+
 #### (7).第七步，profile配置Hadoop命令（可省）
+
+	#set hadoop enviroment
+	export HADOOP_HOME=/usr/hadoop
+	export PATH=$PATH:$HADOOP_HOME/bin
+
+如图所示：
+<img width="600" src="/images/161115/hadoopprofile.png" />	
 
 ### 3).发送给所有slave节点并进行配置
 scp /etc/hosts root@Slave1.Hadoop:/etc/
