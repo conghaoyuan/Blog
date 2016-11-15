@@ -206,7 +206,8 @@ Hadoop 所有的配置文件全部在`/usr/hadoop/etc/hadoop`下，进行相应�
 	Slave2.Hadoop
 
 如图所示
-<img width="600" src="/images/161115/hadoopslaves.png" />	
+<img src="/images/161115/hadoopslaves.png" />	
+注意：slaves 文件只是在Master节点上有用，其他Slave节点没用，但复制过去时带着也无妨。
 
 #### (7).第七步，profile配置Hadoop命令（可省）
 
@@ -218,26 +219,104 @@ Hadoop 所有的配置文件全部在`/usr/hadoop/etc/hadoop`下，进行相应�
 <img width="600" src="/images/161115/hadoopprofile.png" />	
 
 ### 3).发送给所有slave节点并进行配置
-scp /etc/hosts root@Slave1.Hadoop:/etc/
-scp -r /usr/java/ root@Slave1.Hadoop:/usr/
-scp -r /usr/hadoop/ root@Slave1.Hadoop:/usr/
-scp /etc/profile root@Slave1.Hadoop:/etc/
-scp -r hadoop-2.7.1/ hadoop@Slave2.Hadoop:~/
-登录Slave，
-source /etc/profile
-su & cd /usr
-chown -R hadoop:hadoop hadoop/
 
+先将Master配置好的各项文件发给所有的Slave，然后再单独对Slave的相关文件进行设置。
 
+1.将Master的`hosts`文件发给Slave
+
+	scp /etc/hosts root@Slave1.Hadoop:/etc/
+	scp /etc/hosts root@Slave2.Hadoop:/etc/
+
+2.将Master的`JDK`发给Slave
+
+	scp -r /usr/java/ root@Slave1.Hadoop:/usr/
+	scp -r /usr/java/ root@Slave2.Hadoop:/usr/
+
+3.将Master的`hadoop`发送给Slave
+
+	scp -r /usr/hadoop/ root@Slave1.Hadoop:/usr/
+	scp -r /usr/hadoop/ root@Slave2.Hadoop:/usr/
+
+4.将Master的`profile`发送给Slave
+
+	scp /etc/profile root@Slave1.Hadoop:/etc/
+	scp /etc/profile root@Slave2.Hadoop:/etc/
+
+5.将Master创建的`hadoop-2.7.1`目录发送到Slave
+
+	scp -r hadoop-2.7.1/ hadoop@Slave2.Hadoop:~/
+
+6.登录所有的Slave进行配置，让`profile`生效，给`hadoop`文件增加hadoop用户读的权限。
+
+	source /etc/profile
+	su & cd /usr
+	chown -R hadoop:hadoop hadoop/
+
+至此，所有的安装配置工作完成，接下来要进行验证是否配置成功。
 
 ### 4).启动验证
 
 #### (1).格式化HDFS文件系统
 
+在"Master.Hadoop"上使用普通用户hadoop进行操作。（备注：只需一次，下次启动不再需要格式化，只需 start-all.sh）
+
+	hadoop namenode -format
+
+如图所示表示格式化成功：
+
+<img width="600" src="/images/161115/hadoopformat1.png" />	
+<img width="600" src="/images/161115/hadoopformat2.png" />
+
 #### (2).启动Hadoop
+
+进入到`cd /usr/hadoop/bin`目录下
+
+	./start-all.sh
+
+可以通过以下启动日志看出，首先启动namenode 接着启动datanode1，datanode2，…，然后启动secondarynamenode。再启动yarn，resourcemanager,nodemanager.
+
+启动 hadoop成功后，在 Master 中的 tmp 文件夹中生成了 dfs 文件夹，在Slave 中的 tmp 文件夹中均生成了 dfs 文件夹和 nm-local-dir 文件夹。
+<img width="600" src="/images/161115/hadoopstart.png" />	
 
 #### (3).验证Hadoop
 
+通过`jps`查看进程
+Master上查看：
 
+	jps
 
+含有：
+	
+	8515 SecondaryNameNode
+	8325 NameNode
+	9448 Jps
+	8667 ResourceManager
+
+进程，如图所示，表示master运行成功。
+<img src="/images/161115/hadoopmasterjps.png" />
+
+Slave上查看：
+含有：
+
+	12338 Jps
+	11884 NodeManager
+	11775 DataNode
+
+进程，如图所示，表示slave上运行成功。
+<img src="/images/161115/hadoopslave1jps.png" />
+<img src="/images/161115/hadoopslave2jpg.png" />	
+
+还可使用
+
+	[hadoop@Master hadoop]$ hadoop dfsadmin -report
+
+来查看hadoop集群状态。
+
+回到mac上打开chrome浏览器，输入`10.211.55.13:8088`  `10.211.55.13:50070`
+可查看相关网页版状态。
+
+<img src="/images/161115/hadoopweb8088.jpg" />
+<img src="/images/161115/hadoopweb50070.jpg" />
+
+至此，hadoop配置完成，下一步配置zookeeper+hbase
 
