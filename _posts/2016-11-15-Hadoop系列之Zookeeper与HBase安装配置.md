@@ -253,5 +253,76 @@ permsize配置：
 
 ## 3.Hive配置
 
-至此，hadoop配置完成，下一步配置storm+spark
+### 1).安装mysql
+
+这里采用的是yum安装，CentOS7的yum源中默认没有mysql，所以要先下载mysql的repo源。我们所有的软件包都放在`/usr/local/src`下，所以同样进入此目录下载安装。`root用户登录`。
+
+	cd /usr/local/src
+	wget http://dev.mysql.com/get/mysql57-community-release-el7-9.noarch.rpm
+	rpm -ivh mysql-community-release-el7-5.noarch.rpm
+	yum install mysql-server
+
+<img width="600px" src="/images/161116/mysqlyum.png"/>
+yum install后会有几次然提示选择y/NO,这里都输入y同意即可。以上为mysql的yum安装方式，按照以上命令安装即可，一共需要下载33个包共192M，根据网速的不同，安装的速度也不同。详细其他如图所示：
+
+<img width="800px" src="/images/161116/mysqlyumsearch.png"/>
+<img width="800px" src="/images/161116/mysqlyuminstall1.png"/>
+<img width="800px" src="/images/161116/mysqlyuminstall2.png"/>
+至此，mysql已经安装成功。接下来要对其进行配置：启动mysql、设置开机启动、修改默认root密码、配置默认编码utf8
+
+(1).启动mysql
+
+	systemctl start mysqld
+	systemctl status mysqld      #查看mysql启动状态
+
+如图所示：
+<img width="800px" src="/images/161116/mysqlstart.png"/>
+
+(2).设置开机启动
+
+	systemctl enable mysqld
+	systemctl daemon-reload
+
+如图所示：
+<img width="400px" src="/images/161116/mysqlreboot.png"/>
+(3).修改默认root密码
+
+	grep "password" /var/log/mysqld.log      #复制临时密码
+	mysql -u root -p
+	粘贴临时密码回车即可登录到mysql
+	mysql> ALTER USER 'root'@'localhost' IDENTIFIED BY 'MyNewPass123!'; 
+	或者
+	mysql> set password for 'root'@'localhost'=password('MyNewPass123!');
+
+通过此步骤可查看mysql的临时密码，查找出来后将其复制
+<img width="800px" src="/images/161116/mysqltmppass.png"/>
+mysql的登录，将复制的密码粘贴
+<img width="800px" src="/images/161116/mysqllogin.png"/>
+登陆进去后要进行密码重置，mysql5.6以上增加了密码规则，默认为Medium，需要在8个字符以上，且包含大小写字母数字等。
+<img width="600px" src="/images/161116/mysqlpassset.png"/>
+改了密码后可以查看密码的验证规则
+<img width="600px" src="/images/161116/mysqlvalipass.png"/>
+
+(4).配置默认编码utf8
+
+	vi /etc/my.cnf
+	在最后插入
+	character_set_server=utf8
+	init_connect='SET NAMES utf8'
+	保存退出即可:wq
+	重启mysql
+	systemctl restart mysqld
+
+查看默认的字符集
+<img width="600px" src="/images/161116/mysqldefaultchar.png"/>
+在my.cnf中进行修改配置
+<img width="400px" src="/images/161116/mysqlmy.png"/>
+配置完成后保存退出，重启mysql，再登录进去，即可查看现在的字符集
+<img width="600px" src="/images/161116/mysqldefaultchar2.png"/>
+
+### 2.安装Hive
+
+
+
+至此，Zookeeper、HBase、Hive安装配置完成，下一步配置storm+spark
 
