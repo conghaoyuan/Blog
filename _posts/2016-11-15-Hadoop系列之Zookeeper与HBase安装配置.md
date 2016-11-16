@@ -320,6 +320,12 @@ mysql的登录，将复制的密码粘贴
 配置完成后保存退出，重启mysql，再登录进去，即可查看现在的字符集
 <img width="600px" src="/images/161116/mysqldefaultchar2.png"/>
 
+其他：
+	默认配置文件路径：  /etc/my.cnf  
+	日志文件：/var/log//var/log/mysqld.log  
+	服务启动脚本：/usr/lib/systemd/system/mysqld.service  
+	socket文件：/var/run/mysqld/mysqld.pid
+	
 ### 2.安装Hive
 
 
