@@ -206,7 +206,7 @@ Hadoop 所有的配置文件全部在`/usr/hadoop/etc/hadoop`下，进行相应�
 	Slave2.Hadoop
 
 如图所示
-<img src="/images/161115/hadoopslaves.png" />	
+<img width="300" src="/images/161115/hadoopslaves.png" />	
 注意：slaves 文件只是在Master节点上有用，其他Slave节点没用，但复制过去时带着也无妨。
 
 #### (7).第七步，profile配置Hadoop命令（可省）
@@ -276,7 +276,7 @@ Hadoop 所有的配置文件全部在`/usr/hadoop/etc/hadoop`下，进行相应�
 可以通过以下启动日志看出，首先启动namenode 接着启动datanode1，datanode2，…，然后启动secondarynamenode。再启动yarn，resourcemanager,nodemanager.
 
 启动 hadoop成功后，在 Master 中的 tmp 文件夹中生成了 dfs 文件夹，在Slave 中的 tmp 文件夹中均生成了 dfs 文件夹和 nm-local-dir 文件夹。
-<img width="600" src="/images/161115/hadoopstart.png" />	
+<img width="800" src="/images/161115/hadoopstart.png" />	
 
 #### (3).验证Hadoop
 
@@ -293,7 +293,7 @@ Master上查看：
 	8667 ResourceManager
 
 进程，如图所示，表示master运行成功。
-<img src="/images/161115/hadoopmasterjps.png" />
+<img width="400" src="/images/161115/hadoopmasterjps.png" />
 
 Slave上查看：
 含有：
@@ -303,8 +303,8 @@ Slave上查看：
 	11775 DataNode
 
 进程，如图所示，表示slave上运行成功。
-<img src="/images/161115/hadoopslave1jps.png" />
-<img src="/images/161115/hadoopslave2jpg.png" />	
+<img width="400" src="/images/161115/hadoopslave1jps.png" />
+<img width="400" src="/images/161115/hadoopslave2jpg.png" />	
 
 还可使用
 
