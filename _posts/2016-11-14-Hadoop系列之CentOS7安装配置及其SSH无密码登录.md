@@ -72,6 +72,9 @@ CentOS7安装有个好处为配置与安装分离，安装完基础的软件包�
 
 
 ### (3).配置ip
+<div class="message">
+	声明一下，我用的虚拟机为PD，用VMWare的同学在比较新的版本上可能找不到ifcfg-eth0配置文件，但是如果用NAT模式的话，会出现另一个配置文件ifcfg-essa之类的。所以如果这样的话，配置VMWare相应的配置文件即可。默认的ONBOOY选项为yes，所以也不用配了。
+</div>
 CentOS6.*查看ip地址命令为：`ifconfig`，CentOS7修改为：`ip addr`
 因为所用PD虚拟机的网络设置为共享网络，故只需要在eth0配置文件将开机启动设置为`yes`即可，因每增加一台虚拟机，PD变会将ip进行自增，且下次开机不会改变。如果是物理机的话，就需要配置ip地址，相关的配置不做太多介绍，主要配置`IPADDR``NETMASK``GATEWAY`三个即可。
 	
@@ -160,7 +163,15 @@ CentOS6.*查看ip地址命令为：`ifconfig`，CentOS7修改为：`ip addr`
 
 从上图中得知无密码登录本级已经设置完毕。
 
-5.接下来是把公钥复制所有的Slave机器上，使用下面的命令格式进行复制公钥：
+5.接下来是把公钥复制所有的Slave机器上，在下边的指令中，将公钥复制到了`.ssh`文件夹下，在初始状态下，Slave机器默认没有`.ssh`目录，所以需要先手动创建。使用下面的命令格式进行复制公钥：
+	
+	hadoop用户登录到所有的Slave上，手动创建.ssh目录
+	cd
+	mkdir .ssh
+	chmod 700 .ssh
+	即可
+
+回到Master上。
 
 	scp ~/.ssh/id_rsa.pub 远程用户名@远程服务器IP:~/
 	例如：
