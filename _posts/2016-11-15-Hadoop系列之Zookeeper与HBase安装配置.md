@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Hadoop系列之（三）Zookeeper与HBase安装配置
+title: Hadoop系列之（三）Zookeeper、HBase与Hive安装配置
 categories:
 - 大数据
 ---
@@ -113,22 +113,142 @@ zookeeper通过选举机制来选出`leader`和`follower`,因此机器必须为�
 <img width="600px" src="/images/161115/zookeeperstatus2.png"/>
 
 至此，zookeeper配置成功。
+===================
+
+<div class="message">
+  HBase – Hadoop Database，是一个高可靠性、高性能、面向列、可伸缩的分布式存储系统，利用HBase技术可在廉价PC Server上搭建起大规模结构化存储集群。HBase是Google Bigtable的开源实现，类似Google Bigtable利用GFS作为其文件存储系统，HBase利用Hadoop HDFS作为其文件存储系统;Google运行MapReduce来处理Bigtable中的海量数据，HBase同样利用Hadoop MapReduce来处理HBase中的海量数据;Google Bigtable利用 Chubby作为协同服务，HBase利用Zookeeper作为对应来源.
+</div>
 
 ## 2.HBase安装配置
 
-更新中。。。。。
-
 ### 1.复制解压hbase-1.1.7-bin.tar.gz
 
+root用户登录，将`hbase-1.1.7-bin.tar.gz`拷贝到`/usr`目录下，解压后，将`hbase-1.1.7`重命名为`hbase`，删除`hbase-1.1.7-bin.tar.gz`包,给`hbase`添加读权限。
+
+	cd /usr/loacl/src
+	ls
+	cp hbase-1.1.7-bin.tar.gz /usr/        #将hbase安装包拷贝到安装目录
+	cd /usr & ls
+	tar zxvf hbase-1.1.7-bin.tar.gz        #解压缩
+	mv hbase-1.1.7 hbase                   #重命名
+	rm hbase-1.1.7-bin.tar.gz            
+	chown -r hadoop:hadoop hbase           #改权限
+
+如下图操作：
+<img width="600px" src="/images/161116/hbasetargz.png"/>
+<img width="600px" src="/images/161116/hbasechown.png"/>
+
+接下来要进行配置，共需要配置三个文件：`hbase-env.sh` `hbase-site.xml` 和 `regionservers`.如图所示：
+<img width="600px" src="/images/161116/hbaseconf.png"/>
+
 ### 2.配置hbase-env.sh
+`hbase-env.sh`的配置有几个坑，第一个为`HBASE_PID_DIR`，第二个为`PermSize`设置问题，如果第一个不设置的话，在启动hbase的时候会出现一个错误提示
+
+	/usr/hbase/bin/hbase-daemon.sh:行213: /tmp/hbase-hadoop-master.pid: 权限不够
+
+由于`The directory where pid files are stored. /tmp by default.`默认存放hbase-hadoop-master.pid的目录为`/tmp`，而这个目录为系统级目录，需要root权限，且每次系统重启后`/tmp`目录内容清空。故需要重新设置一下，后边会讲。第二个如果不设置的话，也会出现警告提示：
+
+	Java HotSpot(TM) 64-Bit Server VM warning: ignoring option PermSize=128m; support was removed in 8.0
+	Java HotSpot(TM) 64-Bit Server VM warning: ignoring option MaxPermSize=128m; support was removed in 8.0
+	........
+
+因此，也需要在`hbase-env.sh`配置文件中进行配置，后面讲。
+
+在`hbase-env.sh`配置文件中，需要配置`三个`地方。第一个为`JDK`目录，第二个为`HBASE_PID_DIR`，第三个为`PermSize`.
+
+	cd /usr/hbase/conf
+	vi hbase-env.sh
+	1.在28行配置jdk路径
+	export JAVA_HOME=/usr/java/jdk1.8.0_111
+	2.在122行配置pid目录
+	export HBASE_PID_DIR=/home/hadoop/hbase-1.1.7/tmp
+	3.在46行将PermSize的两个配置关掉
+	#export HBASE_MASTER_OPTS="$HBASE_MASTER_OPTS -XX:PermSize=128m -XX:MaxPermSize=128m"
+	#export HBASE_REGIONSERVER_OPTS="$HBASE_REGIONSERVER_OPTS -XX:PermSize=128m -XX:MaxPermSize=128m"
+
+至此，hbase-env.sh配置完成。保存退出即可`:wq`，这是正确的配置方法，如图：
+
+jdk配置：
+<img width="600px" src="/images/161116/hbasejdk.png"/>
+
+pid_dir配置：
+<img width="600px" src="/images/161116/hbasepid.png"/>
+这里的pid路径需要自己创建
+<img width="600px" src="/images/161116/hbasepiddir.png"/>
+如果不配置的话，启动时会出现如下错误：
+<img width="600px" src="/images/161116/hbaseerrorpid.png"/>
+
+permsize配置：
+<img width="600px" src="/images/161116/hbaseenvpermsize1.png"/>
+入托不进行配置的话，启动时会出现如下错误：
+<img width="600px" src="/images/161116/hbasepermsizeerror.png"/>
 
 ### 3.配置hbase-site.xml
 
+	vi hbase-site.xml
+	添加如下配置：
+	<property>
+            <name>hbase.rootdir</name>
+            <value>hdfs://Master.Hadoop:9000/hbase</value>
+    </property>
+    <property>
+            <name>hbase.cluster.distributed</name>
+            <value>true</value>
+    </property>
+    <property>
+            <name>hbase.zookeeper.quorum</name>
+            <value>Master.Hadoop,Slave1.Hadoop,Slave2.Hadoop</value>
+    </property>
+    <property>
+            <name>hbase.zookeeper.property.dataDir</name>
+            <value>/home/hadoop/zookeeper-3.4.6/data</value>
+    </property>
+    保存退出:wq
+
+其中`hbase.zookeeper.property.dataDir`的目录为之前配置`zookeeper`的data目录。
+<img width="600px" src="/images/161116/hbase-site.png"/>
+
 ### 4.配置regionservers
+
+	vi regionservers
+	添加：
+	Master.Hadoop
+	Slave1.Hadoop
+	Slave2.Hadoop
+
+<img width="200px" src="/images/161116/hbaseregoin.png"/>
 
 ### 5.将hbase发送到其他slave
 
+和hadoop、zookeeper的配置一样，在master上配置完成后，将其相关文件发送到所有的slave下，并且修改其权限。
+
+	scp -r /usr/hbase root@Slave1.Hadoop:/usr
+	scp -r /usr/hbase root@Slave2.Hadoop:/usr
+	提示让输入密码后发送过去
+	scp -r /home/hadoop/hbase-1.1.7 hadoop@Slave1.Hadoop:/home/hadoop
+	scp -r /home/hadoop/hbase-1.1.7 hadoop@Slave2.Hadoop:/home/hadoop
+
+分别进入Slave1和Slave2，修改`/usr/hbase`的权限问题，root用户登录
+	
+	cd /usr
+	ll
+	chown -R hadoop:hadoop hbase/
+
+修改完成后，即完成hbase配置，下边开启服务并验证。
+
 ### 6.开启HBase服务
+
+进入master的hbase
+
+	cd /usr/hbase/bin
+	./start-hbase.sh
+	jps
+	查看所有机器，会出现HRegionServer进程，则hbase启动成功
+
+<img width="200px" src="/images/161116/hbasestart.png"/>
+<img width="200px" src="/images/161116/hbaseslave.png"/>
+
+至此，HBase配置完成。
 
 ## 3.Hive配置
 
