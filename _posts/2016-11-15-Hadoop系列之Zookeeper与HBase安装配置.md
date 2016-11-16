@@ -245,10 +245,11 @@ permsize配置：
 	jps
 	查看所有机器，会出现HRegionServer进程，则hbase启动成功
 
-<img width="200px" src="/images/161116/hbasestart.png"/>
-<img width="200px" src="/images/161116/hbaseslave.png"/>
+<img width="600px" src="/images/161116/hbasestart.png"/>
+<img width="600px" src="/images/161116/hbaseslave.png"/>
 
 至此，HBase配置完成。
+================
 
 ## 3.Hive配置
 
