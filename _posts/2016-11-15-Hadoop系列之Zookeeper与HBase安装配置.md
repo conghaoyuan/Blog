@@ -248,14 +248,34 @@ permsize配置：
 <img width="800px" src="/images/161116/hbasestart.png"/>
 <img width="300px" src="/images/161116/hbaseslave.png"/>
 
-至此，HBase配置完成。
+至此，HBase安装配置完成，可以装Hive了。
 ================
 
-## 3.Hive配置
+<div class="message">
+	1.Hive 是建立在 Hadoop  上的数据仓库基础构架。它提供了一系列的工具，可以用来进行数据提取转化加载（ETL ），这是一种可以存储、查询和分析存储在 Hadoop  中的大规模数据的机制。Hive 定义了简单的类 SQL  查询语言，称为 QL ，它允许熟悉 SQL  的用户查询数据。同时，这个语言也允许熟悉 MapReduce  开发者的开发自定义的 mapper  和 reducer  来处理内建的 mapper 和 reducer  无法完成的复杂的分析工作。
+	2.Hive是SQL解析引擎，它将SQL语句转译成M/R Job然后在Hadoop执行。
+	3.Hive的表其实就是HDFS的目录/文件，按表名把文件夹分开。如果是分区表，则分区值是子文件夹，可以直接在M/R Job里使用这些数据。
+</div>
 
-### 1).安装mysql
+## 3.Hive安装配置
+因为Hive为SQL的解析引擎，故需要数据库作为`存储引擎`，Hive默认使用内嵌`derby`数据库作为存储引擎，但`Derby`引擎的缺点为：一次只能打开一个会话，因此后边我们会把`Mysql`作为外置存储引擎，多用户可同时访问。
 
-这里采用的是yum安装，CentOS7的yum源中默认没有mysql，所以要先下载mysql的repo源。我们所有的软件包都放在`/usr/local/src`下，所以同样进入此目录下载安装。`root用户登录`。
+### 1).安装Hive
+
+这里要说明一下，Hive只需要在一台机器上安装即可，原则上Hive可以在任意一台机器上安装，有的可能考虑Master的服务较多，会选择一台datanode进行安装，在这里我们就选择在Master上安装即可，同样，Mysql也只需要在Master上安装。
+
+#### (1).安装Hive
+
+#### (2).配置Hive
+
+#### (3).启动测试Hive
+
+
+
+
+### 2).安装mysql
+
+这里采用的是yum安装，注意一下，使用yum必须虚拟机能上外网，否则没法用。CentOS7的yum源中默认没有mysql，所以要先下载mysql的repo源。我们所有的软件包都放在`/usr/local/src`下，所以同样进入此目录下载安装。`root用户登录`。
 
 	cd /usr/local/src
 	wget http://dev.mysql.com/get/mysql57-community-release-el7-9.noarch.rpm
