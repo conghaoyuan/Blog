@@ -106,8 +106,8 @@ mysql的登录，将复制的密码粘贴
 	mysql>GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'youpassword' WITH GRANT OPTION;
 	mysql>FLUSH PRIVILEGES
 
-<img width="600px" src="/images/161116/mysqlremotelogin.png"/>
-<img width="600px" src="/images/161116/mysqlremotesetup.png"/>
+<img width="600px" src="/images/161117/mysqlremotelogin.png"/>
+<img width="600px" src="/images/161117/mysqlremotesetup.png"/>
 操作完后切记执行以下命令刷新权限 
 	
 	FLUSH PRIVILEGES
