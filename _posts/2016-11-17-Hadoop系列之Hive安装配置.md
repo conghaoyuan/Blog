@@ -10,11 +10,10 @@ categories:
 	3.Hive的表其实就是HDFS的目录/文件，按表名把文件夹分开。如果是分区表，则分区值是子文件夹，可以直接在M/R Job里使用这些数据。
 </div>
 
-## 3.Hive安装配置
 因为Hive为SQL的解析引擎，故需要数据库作为`存储引擎`，Hive默认使用内嵌`derby`数据库作为存储引擎，但`Derby`引擎的缺点为：一次只能打开一个会话，因此后边我们会把`Mysql`作为外置存储引擎，多用户可同时访问。
 这里要说明一下，Hive只需要在一台机器上安装即可，原则上Hive可以在任意一台机器上安装，有的可能考虑Master的服务较多，会选择一台datanode进行安装，在这里我们就选择在Master上安装即可，同样，Mysql也只需要在Master上安装。
 
-### 1).安装mysql
+## 1.安装mysql
 
 这里采用的是yum安装，注意一下，使用yum必须虚拟机能上外网，否则没法用。CentOS7的yum源中默认没有mysql，所以要先下载mysql的repo源。我们所有的软件包都放在`/usr/local/src`下，所以同样进入此目录下载安装。`root用户登录`。如果原先机器上已经安装mysql或者自带mysql，可以通过`rpm -e进行卸载`。
 
@@ -31,7 +30,7 @@ yum install后会有几次然提示选择y/NO,这里都输入y同意即可。以
 <img width="800px" src="/images/161116/mysqlyuminstall2.png"/>
 至此，mysql已经安装成功。接下来要对其进行配置：启动mysql、设置开机启动、修改默认root密码、配置默认编码utf8
 
-(1).启动mysql
+### 1).启动mysql
 
 	systemctl start mysqld
 	systemctl status mysqld      #查看mysql启动状态
@@ -39,14 +38,14 @@ yum install后会有几次然提示选择y/NO,这里都输入y同意即可。以
 如图所示：
 <img width="800px" src="/images/161116/mysqlstart.png"/>
 
-(2).设置开机启动
+### 2).设置开机启动
 
 	systemctl enable mysqld
 	systemctl daemon-reload
 
 如图所示：
 <img width="400px" src="/images/161116/mysqlreboot.png"/>
-(3).修改默认root密码
+### 3).修改默认root密码
 
 	grep "password" /var/log/mysqld.log      #复制临时密码
 	mysql -u root -p
@@ -64,7 +63,7 @@ mysql的登录，将复制的密码粘贴
 改了密码后可以查看密码的验证规则
 <img width="600px" src="/images/161116/mysqlvalipass.png"/>
 
-(4).配置默认编码utf8
+### 4).配置默认编码utf8
 
 	vi /etc/my.cnf
 	在最后插入
@@ -81,21 +80,61 @@ mysql的登录，将复制的密码粘贴
 配置完成后保存退出，重启mysql，再登录进去，即可查看现在的字符集
 <img width="600px" src="/images/161116/mysqldefaultchar2.png"/>
 
+### 5).设置允许远程用户登录访问mysql
+
+如果不进行配置，在进行
+
+	mysql -u root -h Master.Hadoop -p
+
+登陆时，会出现错误：
+
+	ERROR 1130 (HY000): Host 'Master.Hadoop' is not allowed to connect to this MySQL server
+
+两种方法进行修改，选一种即可：
+
+方法一、本地登入mysql，更改 "mysql" 数据库里的 "user" 表里的 "host" 项，将"localhost"改为"%"
+	
+	mysql -u root -proot
+	mysql>use mysql;
+	mysql>update user set host = '%' where user = 'root';
+	mysql>select host, user from user;
+	mysql>FLUSH PRIVILEGES
+
+方法二、直接授权(推荐)
+	
+	mysql -u root -proot 
+	mysql>GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'youpassword' WITH GRANT OPTION;
+	mysql>FLUSH PRIVILEGES
+
+<img width="600px" src="/images/161116/mysqlremotelogin.png"/>
+<img width="600px" src="/images/161116/mysqlremotesetup.png"/>
+操作完后切记执行以下命令刷新权限 
+	
+	FLUSH PRIVILEGES
+
 其他：
 	默认配置文件路径：  /etc/my.cnf  
 	日志文件：/var/log//var/log/mysqld.log  
 	服务启动脚本：/usr/lib/systemd/system/mysqld.service  
 	socket文件：/var/run/mysqld/mysqld.pid
-	
 
-### 2).安装Hive
+## 2.安装Hive
 
 
-#### (1).安装Hive
 
-#### (2).配置Hive
+### 1).安装Hive
 
-#### (3).启动测试Hive
+### 2).配置Hive
+
+#### (1).配置hive-log4j.properties
+
+#### (2).配置hive-env.sh
+
+#### (3).配置hive-site.xml
+
+### 3).启动测试Hive
+
+
 
 
 
