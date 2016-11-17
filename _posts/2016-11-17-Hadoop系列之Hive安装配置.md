@@ -152,6 +152,7 @@ mysql的登录，将复制的密码粘贴
 查看hive所有的配置文件，并将一下四个配置文件重命名,如图所示：
 <img width="600px" src="/images/161117/hiveconfls.png"/>
 要对`hive-log4j.properties`和`hive-site.xml`进行配置。
+
 #### (2).配置hive-log4j.properties
 
 	vi /usr/hive/conf/hive-log4j.properties
@@ -163,33 +164,166 @@ mysql的登录，将复制的密码粘贴
 
 #### (3).配置hive-site.xml
 
-<img width="600px" src="/images/161117/hivesitelog.png"/>
+在此配置文件中需要配置的地方较多，需要配置:
+
+* hive.metastore.warehouse.dir     #指定hive的数据存储目录，指定的是HDFS上的位置，默认值：/user/hive/warehouse，为了便于管理，hive-1.2.1文件下创建文件warehouse,在335行左右。
+* hive.exec.scratchdir             #指定hive的临时数据目录，默认位置为：/tmp/hive-${user.name}。为了便于管理，hive-1.2.1文件下创建文件scratchdir。在47行左右。
+* hive.exec.local.scratchdir       #hadoop用户下的，在51行左右
+* hive.querylog.location           #log目录，在1320行左右
+* hive.downloaded.resources.dir    #在56行左右，如果不配置的话会报错。
+* javax.jdo.option.ConnectionURL   #指定hive连接的数据库的数据库连接字符串，在396行左右。
+* javax.jdo.option.ConnectionDriverName   #指定驱动的类入口名称，在790行左右
+* javax.jdo.option.ConnectionUserName     #数据库用户名，在815行左右。
+* javax.jdo.option.ConnectionPassword     #数据库密码，在381行左右
+
+分别进行配置：
+
+hive.metastore.warehouse.dir,需要创建`/home/hadoop/hive-1.2.1/warehouse`目录
+
+	<property>
+    	<name>hive.metastore.warehouse.dir</name>
+    	<value>/home/hadoop/hive-1.2.1/warehouse</value>
+    	<description>location of default database for the warehouse</description>
+    </property>
+配置如图所示：
 <img width="600px" src="/images/161117/hivesitewarehouse.png"/>
-<img width="600px" src="/images/161117/hivesitepass.png"/>
-<img width="600px" src="/images/161117/hivesiterecourseerror.png"/>
-<img width="600px" src="/images/161117/hivesitedriver.png"/>
-<img width="600px" src="/images/161117/hivesiteresource.png"/>
+
+hive.exec.scratchdir，需要创建`/home/hadoop/hive-1.2.1/scratchdir`目录
+
+    <property>
+    	<name>hive.exec.scratchdir</name>
+    	<value>/home/hadoop/hive-1.2.1/scratchdir</value>
+    	<description>HDFS root scratch dir for Hive jobs which gets created with write all (733) permission. For each connecting user, an HDFS scratch dir: ${hive.exec.scratchdir}/&lt;username&gt; is created, with ${hive.scratch.dir.permission}.</description>
+    </property>
+
+配置如图所示：
 <img width="600px" src="/images/161117/hivesitescra.png"/>
-<img width="600px" src="/images/161117/hivesitestart1.png"/>
-<img width="600px" src="/images/161117/hivesitestart2.png"/>
+
+hive.exec.local.scratchdir，需要创建`/home/hadoop/hive-1.2.1/scratchdir`目录
+
+    <property>
+    	<name>hive.exec.local.scratchdir</name>
+    	<value>/home/hadoop/hive-1.2.1/scratchdir</value>
+    	<description>Local scratch space for Hive jobs</description>
+    </property>
+配置如图所示：
+<img width="600px" src="/images/161117/hivesitescralocal.png"/>
+
+hive.querylog.location，需要创建`/home/hadoop/hive-1.2.1/logs`目录
+
+	<property>
+    	<name>hive.querylog.location</name>
+    	<value>/home/hadoop/hive-1.2.1/logs</value>
+    	<description>Location of Hive run time structured log file</description>
+    </property>
+配置如图所示：
+<img width="600px" src="/images/161117/hivesitelog.png"/>
+
+hive.downloaded.resources.dir，需要创建`/home/hadoop/hive-1.2.1/resources/`目录
+
+	<property>
+    	<name>hive.downloaded.resources.dir</name>
+    	<value>/home/hadoop/hive-1.2.1/resources/${hive.session.id}_resources</value>
+    	<description>Temporary local directory for added resources in the remote file system.</description>
+    </property>
+配置如图所示：
+<img width="600px" src="/images/161117/hivesiteresource.png"/>
+如果不对其进行配置，启动hive时会出现如下错误：
+<img width="600px" src="/images/161117/hivesiterecourseerror.png"/>
+
+javax.jdo.option.ConnectionURL
+	
+	<property>
+    	<name>javax.jdo.option.ConnectionURL</name>
+    	<value>jdbc:mysql://localhost:3306/hivedb?createDatabaseIfNotExist=true</value>
+    	<description>JDBC connect string for a JDBC metastore</description>
+    </property>
+原始状态为Derby引擎，如图所示：
 <img width="600px" src="/images/161117/hivesiteurl1.png"/>
+修改为mysql引擎。此处的远程登录地址为Master.Hadoop，而不是localhost，这就是为什么需要在mysql配置中添加远程访问配置了。
 <img width="600px" src="/images/161117/hivesiteurl2.png"/>
-<img width="600px" src="/images/161117/hivesiteurl3.png"/>
+
+javax.jdo.option.ConnectionDriverName
+
+	<property>
+    	<name>javax.jdo.option.ConnectionDriverName</name>
+    	<value>com.mysql.jdbc.Driver</value>
+    	<description>Driver class name for a JDBC metastore</description>
+    </property>
+配置如图所示：
+<img width="600px" src="/images/161117/hivesitedriver.png"/>
+
+javax.jdo.option.ConnectionUserName
+
+	<property>
+    	<name>javax.jdo.option.ConnectionUserName</name>
+    	<value>root</value>
+    	<description>Username to use against metastore database</description>
+    </property>
+配置如图所示：
 <img width="600px" src="/images/161117/hivesiteusername.png"/>
-<img width="600px" src="/images/161117/hivesitewarehouse.png"/>
-<img width="600px" src="/images/161117/hivesitezoo.png"/>
-<img width="600px" src="/images/161117/hivezoocp.png"/>
 
+javax.jdo.option.ConnectionPassword  
 
-<img width="600px" src="/images/161117/hiveconfls.png"/>
+	<property>
+    	<name>javax.jdo.option.ConnectionPassword</name>
+    	<value>MyNewPass123!</value>
+    	<description>password to use against metastore database</description>
+    </property>
+配置如图所示：
+<img width="600px" src="/images/161117/hivesitepass.png"/>
+
+#### (4).将mysql驱动jar包导入/usr/hive/lib下
+
+提前将`mysql-connector-java-5.1.39-bin.jar`传到/usr/local/src下。
+
+	cd /usr/local/src
+	ls
+	cp mysql-connector-java-5.1.39-bin.jar /usr/hive/lib
+
+<img width="600px" src="/images/161117/hivemysqlconnector.png"/>
+
+至此，hive-site.xml配置完成，还是比较麻烦的，下边开始启动hive服务。
+
 ### 3).启动测试Hive
 
-<img width="600px" src="/images/161117/hiveconfls.png"/>
+因为之前已经将hive配置到环境变量里边，直接在命令行中输入`hive`即可。
+	
+	hive
+
+首次输入可能会出现如下警告：
+<img width="600px" src="/images/161117/hivesitestart1.png"/>
+首先恭喜，出现这个的时候说明已经安装成功了，这是警告不是错误，以后使用是不影响的。大概的意思就是说建立ssl连接，但是服务器没有身份认证，这种方式不推荐使用。可以通过修改`hive-site.xml`配置文件进行修改。还是javax.jdo.option.ConnectionURL这项：改为：
+
+	<property>
+    	<name>javax.jdo.option.ConnectionURL</name>
+    	<value>jdbc:mysql://Master.Hadoop:3306/hivedb?useSSL=false</value>
+    	<description>JDBC connect string for a JDBC metastore</description>
+    </property>
+
+如图所示：
+<img width="600px" src="/images/161117/hivesiteurl3.png"/>
+再进行启动，即可看到没有警告。
+
+	hive
+
+<img width="600px" src="/images/161117/hivesitestart2.png"/>
+继续在hive内输入：
+
+	show databases
+	show tables
+
+如图所示表明hive安装成功。
+<img width="600px" src="/images/161117/hivesiteurl3.png"/>
+
+
+
 ### 4).Hive与HBase、Zookeeper进行整合
 
-<img width="600px" src="/images/161117/hiveconfls.png"/>
+<img width="600px" src="/images/161117/hivesitezoo.png"/>
+<img width="600px" src="/images/161117/hivezoocp.png"/>
 ### 5).Hive与HBase整合测试
-hivemysqlconnector.png
+
 
 更新中。。。。。。
 至此，Hive安装配置完成，下一步配置storm+spark
