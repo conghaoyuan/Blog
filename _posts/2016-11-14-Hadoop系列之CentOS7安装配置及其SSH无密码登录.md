@@ -130,6 +130,8 @@ CentOS6.*查看ip地址命令为：`ifconfig`，CentOS7修改为：`ip addr`
 	RSAAuthentication yes # 启用 RSA 认证
 	PubkeyAuthentication yes # 启用公钥私钥配对认证方式
 	AuthorizedKeysFile .ssh/authorized_keys # 公钥文件路径（和上面生成的文件同）
+	保存退出:wq，后要将sshd服务重启
+	systemctl restart  sshd.service  #启动服务
 	然后分别在所有机器的hadoop用户的~/目录下分别建立.ssh文件夹并将其权限设为700 chmod 700 .ssh 
 	~/ 目录为登录hadoop用户后，直接cd下的目录
 
