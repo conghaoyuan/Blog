@@ -185,6 +185,7 @@ hive.metastore.warehouse.dir,需要创建`/home/hadoop/hive-1.2.1/warehouse`目�
     	<value>/home/hadoop/hive-1.2.1/warehouse</value>
     	<description>location of default database for the warehouse</description>
     </property>
+
 配置如图所示：
 <img width="600px" src="/images/161117/hivesitewarehouse.png"/>
 
@@ -206,6 +207,7 @@ hive.exec.local.scratchdir，需要创建`/home/hadoop/hive-1.2.1/scratchdir`目
     	<value>/home/hadoop/hive-1.2.1/scratchdir</value>
     	<description>Local scratch space for Hive jobs</description>
     </property>
+
 配置如图所示：
 <img width="600px" src="/images/161117/hivesitescralocal.png"/>
 
@@ -216,6 +218,7 @@ hive.querylog.location，需要创建`/home/hadoop/hive-1.2.1/logs`目录
     	<value>/home/hadoop/hive-1.2.1/logs</value>
     	<description>Location of Hive run time structured log file</description>
     </property>
+
 配置如图所示：
 <img width="600px" src="/images/161117/hivesitelog.png"/>
 
@@ -226,6 +229,7 @@ hive.downloaded.resources.dir，需要创建`/home/hadoop/hive-1.2.1/resources/`
     	<value>/home/hadoop/hive-1.2.1/resources/${hive.session.id}_resources</value>
     	<description>Temporary local directory for added resources in the remote file system.</description>
     </property>
+
 配置如图所示：
 <img width="600px" src="/images/161117/hivesiteresource.png"/>
 如果不对其进行配置，启动hive时会出现如下错误：
@@ -238,6 +242,7 @@ javax.jdo.option.ConnectionURL
     	<value>jdbc:mysql://localhost:3306/hivedb?createDatabaseIfNotExist=true</value>
     	<description>JDBC connect string for a JDBC metastore</description>
     </property>
+
 原始状态为Derby引擎，如图所示：
 <img width="600px" src="/images/161117/hivesiteurl1.png"/>
 修改为mysql引擎。此处的远程登录地址为Master.Hadoop，而不是localhost，这就是为什么需要在mysql配置中添加远程访问配置了。
@@ -250,6 +255,7 @@ javax.jdo.option.ConnectionDriverName
     	<value>com.mysql.jdbc.Driver</value>
     	<description>Driver class name for a JDBC metastore</description>
     </property>
+
 配置如图所示：
 <img width="600px" src="/images/161117/hivesitedriver.png"/>
 
@@ -260,6 +266,7 @@ javax.jdo.option.ConnectionUserName
     	<value>root</value>
     	<description>Username to use against metastore database</description>
     </property>
+
 配置如图所示：
 <img width="600px" src="/images/161117/hivesiteusername.png"/>
 
@@ -270,6 +277,7 @@ javax.jdo.option.ConnectionPassword
     	<value>MyNewPass123!</value>
     	<description>password to use against metastore database</description>
     </property>
+
 配置如图所示：
 <img width="600px" src="/images/161117/hivesitepass.png"/>
 
@@ -314,7 +322,7 @@ javax.jdo.option.ConnectionPassword
 	show tables
 
 如图所示表明hive安装成功。
-<img width="600px" src="/images/161117/hivesiteurl3.png"/>
+<img width="600px" src="/images/161117/hivestart3.png"/>
 
 
 
