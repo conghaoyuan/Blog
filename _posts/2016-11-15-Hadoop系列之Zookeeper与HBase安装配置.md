@@ -259,23 +259,11 @@ permsize配置：
 
 ## 3.Hive安装配置
 因为Hive为SQL的解析引擎，故需要数据库作为`存储引擎`，Hive默认使用内嵌`derby`数据库作为存储引擎，但`Derby`引擎的缺点为：一次只能打开一个会话，因此后边我们会把`Mysql`作为外置存储引擎，多用户可同时访问。
-
-### 1).安装Hive
-
 这里要说明一下，Hive只需要在一台机器上安装即可，原则上Hive可以在任意一台机器上安装，有的可能考虑Master的服务较多，会选择一台datanode进行安装，在这里我们就选择在Master上安装即可，同样，Mysql也只需要在Master上安装。
 
-#### (1).安装Hive
+### 1).安装mysql
 
-#### (2).配置Hive
-
-#### (3).启动测试Hive
-
-
-
-
-### 2).安装mysql
-
-这里采用的是yum安装，注意一下，使用yum必须虚拟机能上外网，否则没法用。CentOS7的yum源中默认没有mysql，所以要先下载mysql的repo源。我们所有的软件包都放在`/usr/local/src`下，所以同样进入此目录下载安装。`root用户登录`。
+这里采用的是yum安装，注意一下，使用yum必须虚拟机能上外网，否则没法用。CentOS7的yum源中默认没有mysql，所以要先下载mysql的repo源。我们所有的软件包都放在`/usr/local/src`下，所以同样进入此目录下载安装。`root用户登录`。如果原先机器上已经安装mysql或者自带mysql，可以通过`rpm -e进行卸载`。
 
 	cd /usr/local/src
 	wget http://dev.mysql.com/get/mysql57-community-release-el7-9.noarch.rpm
@@ -346,7 +334,15 @@ mysql的登录，将复制的密码粘贴
 	服务启动脚本：/usr/lib/systemd/system/mysqld.service  
 	socket文件：/var/run/mysqld/mysqld.pid
 	
-### 2.安装Hive
+
+### 2).安装Hive
+
+
+#### (1).安装Hive
+
+#### (2).配置Hive
+
+#### (3).启动测试Hive
 
 
 
