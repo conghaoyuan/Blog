@@ -120,22 +120,76 @@ mysql的登录，将复制的密码粘贴
 
 ## 2.安装Hive
 
-
-
 ### 1).安装Hive
+
+	cd /usr/local/src
+	ls
+	cp apache-hive-1.2.1-bin.tar.gz /usr
+	tar zxvf apache-hive-1.2.1-bin.tar.gz
+	mv apache-hive-1.2.1 hive
+	chown -R hadoop:hadoop hive
+	rm apache-hive-1.2.1-bin.tar.gz
+	ll
+
+<img width="600px" src="/images/161117/hivesrctar.png"/>
+<img width="600px" src="/images/161117/hivezxvf.png"/>
 
 ### 2).配置Hive
 
-#### (1).配置hive-log4j.properties
+#### (1).配置/etc/profile
 
-#### (2).配置hive-env.sh
+	vi /etc/profile
+	最后添加
+	#set hive environment
+	export HIVE_HOME=/usr/hive
+	export HIVE_CONF_HOME=/usr/hive/conf
+	export PATH=$PATH:$HIVE_HOME/bin
+	保存退出:wq
+	source /etc/profile
+
+<img width="600px" src="/images/161117/hiveprofile.png"/>
+
+查看hive所有的配置文件，并将一下四个配置文件重命名,如图所示：
+<img width="600px" src="/images/161117/hiveconfls.png"/>
+要对`hive-log4j.properties`和`hive-site.xml`进行配置。
+#### (2).配置hive-log4j.properties
+
+	vi /usr/hive/conf/hive-log4j.properties
+	在hive.log.dir处设置
+	hive.log.dir=/home/hadoop/hive-1.2.1/logs
+	其中hive-1.2.1/logs目录同hadoop、zookeeper、hbase一样需要创建，后边会讲统一创建
+
+<img width="600px" src="/images/161117/hiveconfproper.png"/>
 
 #### (3).配置hive-site.xml
 
+<img width="600px" src="/images/161117/hivesitelog.png"/>
+<img width="600px" src="/images/161117/hivesitewarehouse.png"/>
+<img width="600px" src="/images/161117/hivesitepass.png"/>
+<img width="600px" src="/images/161117/hivesiterecourseerror.png"/>
+<img width="600px" src="/images/161117/hivesitedriver.png"/>
+<img width="600px" src="/images/161117/hivesiteresource.png"/>
+<img width="600px" src="/images/161117/hivesitescra.png"/>
+<img width="600px" src="/images/161117/hivesitestart1.png"/>
+<img width="600px" src="/images/161117/hivesitestart2.png"/>
+<img width="600px" src="/images/161117/hivesiteurl1.png"/>
+<img width="600px" src="/images/161117/hivesiteurl2.png"/>
+<img width="600px" src="/images/161117/hivesiteurl3.png"/>
+<img width="600px" src="/images/161117/hivesiteusername.png"/>
+<img width="600px" src="/images/161117/hivesitewarehouse.png"/>
+<img width="600px" src="/images/161117/hivesitezoo.png"/>
+<img width="600px" src="/images/161117/hivezoocp.png"/>
+
+
+<img width="600px" src="/images/161117/hiveconfls.png"/>
 ### 3).启动测试Hive
 
+<img width="600px" src="/images/161117/hiveconfls.png"/>
+### 4).Hive与HBase、Zookeeper进行整合
 
+<img width="600px" src="/images/161117/hiveconfls.png"/>
+### 5).Hive与HBase整合测试
+hivemysqlconnector.png
 
-
-
-至此，Zookeeper、HBase、Hive安装配置完成，下一步配置storm+spark
+更新中。。。。。。
+至此，Hive安装配置完成，下一步配置storm+spark
