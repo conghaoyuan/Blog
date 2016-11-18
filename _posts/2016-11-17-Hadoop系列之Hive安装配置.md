@@ -335,3 +335,8 @@ javax.jdo.option.ConnectionPassword
 
 更新中。。。。。。
 至此，Hive安装配置完成，下一步配置storm+spark
+
+
+看在我辛苦截图敲代码的份上，喜欢的话打赏一下吧，哈哈。
+
+<img width="400px" src="/images/shoukuan.png"/>

@@ -251,3 +251,6 @@ permsize配置：
 至此，HBase安装配置完成，鉴于Hive配置较为繁琐，且篇幅较长，单独拿出一章配置Hive。
 ================
 
+看在我辛苦截图敲代码的份上，喜欢的话打赏一下吧，哈哈。
+
+<img width="400px" src="/images/shoukuan.png"/>
