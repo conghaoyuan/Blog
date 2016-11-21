@@ -269,7 +269,7 @@ Hadoop 所有的配置文件全部在`/usr/hadoop/etc/hadoop`下，进行相应�
 
 #### (2).启动Hadoop
 
-进入到`cd /usr/hadoop/bin`目录下
+进入到`cd /usr/hadoop/sbin`目录下
 
 	./start-all.sh
 
