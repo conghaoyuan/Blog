@@ -243,12 +243,89 @@ permsize配置：
 	cd /usr/hbase/bin
 	./start-hbase.sh
 	jps
-	查看所有机器，会出现HRegionServer进程，则hbase启动成功
+	查看所有机器，会出现HRegionServer进程，但是在Master.Hadoop中缺少`HMaster`进程。
+
 
 <img width="800px" src="/images/161116/hbasestart.png"/>
 <img width="300px" src="/images/161116/hbaseslave.png"/>
 
+如果你的机器中在Master中出现`HMaster`和HRegionServer两个进程，在Slave上出现HRegionServer一个进程，则表示配置成功。忽略一下步骤。
+在HBase启动时，如果HRegionServer或者HMaster其中一个进程启动不成功，可以查看日志，会发现集群时间不一致，误差超过2分半钟，所以要保证集群的时间同步。建议搭建ntp时间服务器来保证时间同步。方法如下：
+
+### 7.搭建ntp时间服务器
+
+其实这一步在安装完操作系统就该配置好，由于之前没有发现这里的错误，故就在此进行配置。在系统中查看当前时间，会发现与当前时间不一致。
+<img width="800px" src="/images/161121/ntpoldtime.png"/>
+
+#### (1).检查安装ntp服务
+
+	rpm -qa | grep ntp      #检查是否安装ntp服务,如果没有安装，执行
+	yum install ntp
+
+如图所示：
+<img width="800px" src="/images/161121/ntpqa.png"/>
+
+#### (2).配置ntp服务
+
+为保证集群时间一致，现将hbase的master节点所在虚拟机作为时间服务器，其他Slave节点都与Master节点时间保持一致即可。如果Master连接外网，打开ntp配置文件进行配置。root用户登录
+
+	vi /etc/ntp.conf
+	在17行左右加
+	# Hosts on local network are less restricted.
+	restrict 10.211.55.0 mask 255.255.255.0 nomodify notrap
+	27行左右加
+	# 中国这边最活跃的时间服务器 : http://www.pool.ntp.org/zone/cn
+    server 210.72.145.44 perfer   #中国国家受时中心
+    37行左右加
+    # 允许上层时间服务器主动修改本机时间
+    restrict 210.72.145.44 nomodify notrap noquery
+    restrict 202.112.10.36 nomodify notrap noquery
+    restrict 59.124.196.83 nomodify notrap noquery
+    # 外部时间服务器不可用时，以本地时间作为时间服务
+    server  127.127.1.0     # local clock
+    fudge   127.127.1.0 stratum 10
+    保存退出:wq
+
+<img width="600px" src="/images/161121/ntpconf.png"/>
+
+#### (3).启动服务
+
+配置完成后，需要将ntp服务启动，用下边几条命令进行相关操作
+
+	systemctl enable ntpd.service      #设置开机启动
+	systemctl start ntpd.service       #启动服务
+	systemctl status ntpd.service      #查看状态
+	systemctl restart ntpd.service     #重启服务 
+
+
+<img width="800px" src="/images/161121/ntpstart.png"/>
+<img width="800px" src="/images/161121/ntprestart.png"/>
+
+#### (4).Slave时间同步
+
+在Slave1和Slave2上进行时间同步。root用户登录后
+
+	ntpdate Master.Hadoop
+
+即可查看时间已经改变。
+<img width="800px" src="/images/161121/ntpslave1.png"/>
+<img width="800px" src="/images/161121/ntpslave2.png"/>
+
+#### (5).再次启动HBase并查看状态
+
+时间同步完成后，再次启动hbase查看进程状态
+退出root用户。hadoop用户登录
+
+	cd /usr/hbase/bin
+	./start-hbase.sh
+	jps
+
+会发现Master中有HMaster和HRegionServer，Slave中有HRegionServer则表示启动成功。
+<img width="800px" src="/images/161121/hbasesucess.png"/>
+<img width="400px" src="/images/161121/hbasesucessslave.png"/>
+
 至此，HBase安装配置完成，鉴于Hive配置较为繁琐，且篇幅较长，单独拿出一章配置Hive。
+
 ================
 
 #看在我辛苦截图敲代码的份上，喜欢的话打赏一下吧，哈哈。
