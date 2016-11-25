@@ -19,7 +19,7 @@ categories:
 
 	cd /usr/local/src
 	wget http://dev.mysql.com/get/mysql57-community-release-el7-9.noarch.rpm
-	rpm -ivh mysql-community-release-el7-5.noarch.rpm
+	rpm -ivh mysql57-community-release-el7-9.noarch.rpm
 	yum install mysql-server
 
 <img width="600px" src="/images/161116/mysqlyum.png"/>
