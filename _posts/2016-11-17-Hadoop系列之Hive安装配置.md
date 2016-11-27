@@ -45,6 +45,7 @@ yum install后会有几次然提示选择y/NO,这里都输入y同意即可。以
 
 如图所示：
 <img width="400px" src="/images/161116/mysqlreboot.png"/>
+
 ### 3).修改默认root密码
 
 	grep "password" /var/log/mysqld.log      #复制临时密码
@@ -330,6 +331,7 @@ javax.jdo.option.ConnectionPassword
 
 <img width="600px" src="/images/161117/hivesitezoo.png"/>
 <img width="600px" src="/images/161117/hivezoocp.png"/>
+
 ### 5).Hive与HBase整合测试
 
 
