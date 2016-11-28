@@ -13,8 +13,10 @@ categories:
 
 ### 1.Spark介绍
 
-Spark是UC Berkeley AMP lab (加州大学伯克利分校的AMP实验室)所开源的类Hadoop MapReduce的通用并行框架，Spark，拥有Hadoop MapReduce所具有的优点；但不同于MapReduce的是Job中间输出结果可以保存在内存中，从而不再需要读写HDFS，因此Spark能更好地适用于数据挖掘与机器学习等需要迭代的MapReduce的算法。
-Spark,是一种"One Stack to rule them all"的大数据计算框架，期望使用一个技术完美的解决大数据领域的各项计算任务。Apache官方对Spark的定义：通用的大数据快速处理引擎。Spark除了一站式的特点之外，另外一个最重要的特点就是基于内存进行计算，从而让它的速度可以达到MapReduce、Hive的数倍甚至数十倍。
+Spark是UC Berkeley AMP lab (加州大学伯克利分校的AMP实验室)所开源的类Hadoop MapReduce的通用并行框架，Spark，拥有Hadoop MapReduce所具有的优点；但不同于MapReduce的是Job中间输出结果可以保存在内存中，从而不再需要读写HDFS，因此Spark能更好地适用于数据挖掘与机器学习等需要迭代的MapReduce的算法。<br/>
+
+Spark,是一种"One Stack to rule them all"的大数据计算框架，期望使用一个技术完美的解决大数据领域的各项计算任务。Apache官方对Spark的定义：通用的大数据快速处理引擎。Spark除了一站式的特点之外，另外一个最重要的特点就是基于内存进行计算，从而让它的速度可以达到MapReduce、Hive的数倍甚至数十倍。<br/>
+
 Spark使用Scala语言进行实现，它是一种面向对象、函数式编程语言，能够像操作本地集合对象一样轻松地操作分布式数据集（Scala 提供一个称为 Actor 的并行模型，其中Actor通过它的收件箱来发送和接收非同步信息而不是共享数据，该方式被称为：Shared Nothing 模型）。在Spark官网上介绍，它具有运行速度快、易用性好、通用性强和随处运行等特点。
 现在已经有很多大公司正在生产环境下深度地使用Spark作为大数据的计算框架，包括eBay、Yahoo!、BAT、网易、京东、华为、大众点评、优酷土豆、搜狗等。Spark也获得了多个世界顶级的IT厂商的支持，包括IBM、Intel等。
 
