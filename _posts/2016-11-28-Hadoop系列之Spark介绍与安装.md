@@ -6,7 +6,7 @@ categories:
 ---
 
 <div class="message">
-	已经约两周没有更新了，接下来会更新两三篇左右关于整个hadoop系统的安装配置，安装配置系列结束后开始进入实战原理篇。
+	已经约两周没有更新了，接下来会更新两三篇左右关于整个hadoop系统的安装配置，安装配置系列结束后开始进入实战原理篇。经过之前的几篇博客，应该可以对Linux系统有一个大致的概念了，起码在目录结构上，由于写博客在截图包括把图片变小方面甚是繁琐浪费时间，故在以后的博客中为了节省时间和空间，除了个别需要配图外，不再配有详细图片，望见谅。
 </div>
 
 ## 一、简介
@@ -58,7 +58,7 @@ Spark使用Scala语言进行实现，它是一种面向对象、函数式编程�
 
 	wget http://downloads.lightbend.com/scala/2.12.0/scala-2.12.0.tgz
 
-这里获得的是目前的最新版本。
+这里获得的是目前的最新版本。如果系统提示没有找到wget命令，可以通过`yum install wget`进行安装。
 
 #### (1).Scala解压安装
 
@@ -66,6 +66,8 @@ root用户操作，进入下载好的`scala-2.12.0.tgz`目录
 
 	mv scala-2.12.0.tgz /usr
 	tar zxvf scala-2.12.0.tgz
+	chown -R root:root scala-2.12.0
+	## 注意，这里我将其权限修改为root用户拥有，也就是说root级的权限，当在root用户里进行source 配置文件时，在hadoop用户层级却不能使用，需要将配置文件配置好后，在hadoop用户中也进行source /etc/profile，这样scala便作为一个系统级工具可以任意调用。
 	##这里最好建一个软链，后期更新版本只需要更改软链的指向即可，不需要更改环境变量里的配置
 	ln -s scala-2.12.0 scala
 
@@ -100,12 +102,80 @@ root用户操作，进入下载好的`scala-2.12.0.tgz`目录
 
 ### 2.Spark安装
 
-#### ().Spark解压安装
+由于Spark是基于Scala开发的，故相关的版本需要与Scala相关的版本对应，在Spark下载页选择不同的Spark版本可以看到相关的Scala版本要求，由于我们装的Hadoop为2.7.1版本，而2.7版本以上可以安装Spark2.0以上，因此下载对应的最新版本[spark-2.0.2-bin-hadoop2.7.tgz](http://d3kbcqa49mib13.cloudfront.net/spark-2.0.2-bin-hadoop2.7.tgz)。将下载好的spark包拷贝到Master相关的目录下，这里还是scp到`/usr/local/src`下。
 
-#### ().Spark配置
+#### (1).Spark解压安装
 
-#### ().添加到环境变量
+root用户登录
 
-#### ().复制到其他节点
+	cd /usr/local/src && ls
+	cp spark-2.0.2-bin-hadoop2.7.tgz /usr
+	cd /usr
+	tar xf spark-2.0.2-bin-hadoop2.7.tgz
+	mv spark-2.0.2-bin-hadoop2.7 spark
+	chown -R hadoop:hadoop spark
+	rm spark-2.0.2-bin-hadoop2.7.tgz
 
-#### ().启动验证
+#### (2).Spark配置
+
+配置`spark-env.sh`
+
+	cd /usr/spark/conf
+	mv spark-env.sh.template spark-env.sh
+	vi spark-env.sh
+	在后边添加
+	export HADOOP_CONF_DIR=/usr/hadoop/etc/hadoop
+	export SPARK_MASTER_HOST=Master.Hadoop
+	export SPARK_MASTER_PORT=7077
+	export SPARK_WORKER_CORES=1
+	export SPARK_WORKER_INSTANCES=1
+	export SPARK_WORKER_MEMORY=512M
+	保存退出:wq
+
+配置`slaves`
+
+	mv slaves.template slaves
+	vi slaves
+	删除localhost，添加slave节点hostname
+	Slave1.Hadoop
+	Slave2.Hadoop
+	保存退出:wq
+
+#### (3).添加到环境变量
+
+	#set spark environment
+	export SPARK_HOME=/usr/spark
+	export PATH=$PATH:$SPARK_HOME/bin
+
+#### (4).复制到其他节点
+
+	scp -r /usr/spark root@Slave1.Hadoop:/usr
+	scp -r /usr/spark root@Slave2.Hadoop:/usr
+	scp /etc/profile root@Slave1.Hadoop:/etc
+	scp /etc/profile root@Slave2.Hadoop:/etc
+	登录到slave节点root用户，将spark权限进行修改
+	chown -R hadoop:hadoop /usr/spark
+	分别在所有节点的hadoop和root用户中source /etc/profile，环境变量更新让其生效
+
+#### (5).启动验证
+
+	# 启动（由于和hadoop的启动shell名字一样，需要注意）
+	$SPARK_HOME/sbin/start-all.sh
+
+	# 查看集群状态
+	http://hsm01:8080/
+
+	# 命令行交互验证
+	./bin/spark-shell
+
+	scala> val textFile = sc.textFile("file:///home/zkpk/spark-1.6.2/README.md")
+	textFile: org.apache.spark.rdd.RDD[String] = file:///home/zkpk/spark-1.6.2/README.md MapPartitionsRDD[1] at textFile at <console>:27
+
+	scala> textFile.count()
+	res0: Long = 95
+
+	scala> textFile.first()
+	res1: String = # Apache Spark
+
+
+待更新。。。。。
