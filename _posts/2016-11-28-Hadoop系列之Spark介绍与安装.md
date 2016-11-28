@@ -54,13 +54,49 @@ Spark使用Scala语言进行实现，它是一种面向对象、函数式编程�
 
 ### 1.Scala安装
 
+在这里我提前将Scala安装包下载好了并且传到了我的master机器上，可登录[Scala官方网站下载](http://www.scala-lang.org/download/),如果hadoop集群中可以连接外网，同样可以通过`wget`的方式获得，如下：
+
+	wget http://downloads.lightbend.com/scala/2.12.0/scala-2.12.0.tgz
+
+这里获得的是目前的最新版本。
+
 #### (1).Scala解压安装
+
+root用户操作，进入下载好的`scala-2.12.0.tgz`目录
+
+	mv scala-2.12.0.tgz /usr
+	tar zxvf scala-2.12.0.tgz
+	##这里最好建一个软链，后期更新版本只需要更改软链的指向即可，不需要更改环境变量里的配置
+	ln -s scala-2.12.0 scala
 
 #### (2).环境变量配置
 
+	vi /etc/profile
+	#在后边添加
+	#set scala environment
+	export SCALA_HOME=/usr/scala
+	export PATH=$PATH:$SCALA_HOME/bin
+	保存退出:wq
+	source /etc/profile    
+
 #### (3).将Scala复制到其他节点
 
+	scp -r /usr/scala-2.12.0 root@Slave1.Hadoop:/usr
+	scp -r /usr/scala-2.12.0 root@Slave2.Hadoop:/usr
+	scp /usr/scala root@Slave1.Hadoop:/usr
+	scp /usr/scala root@Slave2.Hadoop:/usr
+	scp /etc/profile root@Slave1.Hadoop:/usr
+	scp /etc/profile root@Slave2.Hadoop:/usr
+	同样需在所有的节点中让配置文件生效
+	source /etc/profile
+
 #### (4).验证Scala
+
+在命令行中输入
+
+	scala -version
+	可以看到出现Scala的相关版本信息，则配置成功。
+	Scala code runner version 2.12.0 -- Copyright 2002-2016, LAMP/EPFL and Lightbend, Inc.
 
 ### 2.Spark安装
 
