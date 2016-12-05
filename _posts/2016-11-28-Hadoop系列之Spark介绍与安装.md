@@ -181,7 +181,7 @@ root用户登录
 	http://10.211.55.13:8080/
 
 如图所示：
-<img width="600px" src="/images/161205/sparkstart.png"/>
+<img width="600px" src="/images/161205/sparkstart.jpg"/>
 
 	# 命令行交互验证
 	./bin/spark-shell
