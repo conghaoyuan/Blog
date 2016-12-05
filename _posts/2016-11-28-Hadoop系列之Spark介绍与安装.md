@@ -85,12 +85,8 @@ root用户操作，进入下载好的`scala-2.12.0.tgz`目录
 
 	scp -r /usr/scala-2.12.0 root@Slave1.Hadoop:/usr
 	scp -r /usr/scala-2.12.0 root@Slave2.Hadoop:/usr
-	scp /usr/scala root@Slave1.Hadoop:/usr
-	scp /usr/scala root@Slave2.Hadoop:/usr
-	scp /etc/profile root@Slave1.Hadoop:/usr
-	scp /etc/profile root@Slave2.Hadoop:/usr
-	同样需在所有的节点中让配置文件生效
-	source /etc/profile
+	并登录到其他slave节点，设置软链
+	ln -s /usr/scala-2.12.0 scala
 
 #### (4).验证Scala
 
@@ -118,14 +114,22 @@ root用户登录
 
 #### (2).Spark配置
 
+配置`log4j.properties`
+
+	cd /usr/spark/conf
+	cp log4j.properties.template log4j.properties
+	vi log4j.properties
+	修改 log4j.rootCategory=WARN, console
+
 配置`spark-env.sh`
 
 	cd /usr/spark/conf
 	mv spark-env.sh.template spark-env.sh
 	vi spark-env.sh
 	在后边添加
-	export HADOOP_CONF_DIR=/usr/hadoop/etc/hadoop
-	export SPARK_MASTER_HOST=Master.Hadoop
+	export JAVA_HOME=/usr/java/jdk1.8.0_111
+	export HADOOP_CONF_DIR=/usr/hadoop/etc/hadoop                  #hadoop配置文件的路径
+	export SPARK_MASTER_HOST=Master.Hadoop                         #spark的master主机名
 	export SPARK_MASTER_PORT=7077
 	export SPARK_WORKER_CORES=1
 	export SPARK_WORKER_INSTANCES=1
@@ -145,37 +149,53 @@ root用户登录
 
 	#set spark environment
 	export SPARK_HOME=/usr/spark
-	export PATH=$PATH:$SPARK_HOME/bin
+	export PATH=$PATH:$SPARK_HOME/bin      #注意这里只添加了bin的路径，没有添加sbin，因为spark的启动命令和hadoop启动命令一样，所以如果都添加便难以区分。
 
 #### (4).复制到其他节点
 
 	scp -r /usr/spark root@Slave1.Hadoop:/usr
 	scp -r /usr/spark root@Slave2.Hadoop:/usr
-	scp /etc/profile root@Slave1.Hadoop:/etc
-	scp /etc/profile root@Slave2.Hadoop:/etc
-	登录到slave节点root用户，将spark权限进行修改
-	chown -R hadoop:hadoop /usr/spark
+	将配置文件复制到其他slave节点
+	scp /etc/profile root@Slave1.Hadoop:/usr
+	scp /etc/profile root@Slave2.Hadoop:/usr
+	同样需在所有的节点中让配置文件生效
+	source /etc/profile
 	分别在所有节点的hadoop和root用户中source /etc/profile，环境变量更新让其生效
 
 #### (5).启动验证
 
 	# 启动（由于和hadoop的启动shell名字一样，需要注意）
-	$SPARK_HOME/sbin/start-all.sh
+	cd /usr/spark/sbin
+	./start-all.sh
 
-	# 查看集群状态
-	http://hsm01:8080/
+会看到如下结果：
+
+	[hadoop@Master sbin]$ ./start-all.sh 
+	starting org.apache.spark.deploy.master.Master, logging to /usr/spark/logs/spark-hadoop-org.apache.spark.deploy.master.Master-1-Master.Hadoop.out
+	Slave2.Hadoop: starting org.apache.spark.deploy.worker.Worker, logging to /usr/spark/logs/spark-hadoop-org.apache.spark.deploy.worker.Worker-1-Slave2.Hadoop.out
+	Slave1.Hadoop: starting org.apache.spark.deploy.worker.Worker, logging to /usr/spark/logs/spark-hadoop-org.apache.spark.deploy.worker.Worker-1-Slave1.Hadoop.out
+
+`jps`查看进程会发现master上多出`Master`进程，在slave上会多出`Worker`进程。则表示spark安装启动成功。
+
+	#可以通过物理机在浏览器中查看集群状态
+	http://10.211.55.13:8080/
+
+如图所示：
+<img width="600px" src="/images/161205/sparkstart.png"/>
 
 	# 命令行交互验证
 	./bin/spark-shell
 
-	scala> val textFile = sc.textFile("file:///home/zkpk/spark-1.6.2/README.md")
-	textFile: org.apache.spark.rdd.RDD[String] = file:///home/zkpk/spark-1.6.2/README.md MapPartitionsRDD[1] at textFile at <console>:27
+	scala> val textFile = sc.textFile("file:////usr/spark/README.md")
+	textFile: org.apache.spark.rdd.RDD[String] = file:////usr/spark/README.md MapPartitionsRDD[1] at textFile at <console>:24
 
 	scala> textFile.count()
-	res0: Long = 95
+	res0: Long = 99
 
 	scala> textFile.first()
 	res1: String = # Apache Spark
 
+	:q或者:quit   可推出Scala
 
-待更新。。。。。
+------------
+至此，spark安装配置成功，接下来安装storm。
