@@ -340,6 +340,3 @@ javax.jdo.option.ConnectionPassword
 
 
 ---------------
-##看在我辛苦截图敲代码的份上，喜欢的话打赏一下吧，哈哈。
-
-<img width="400px" src="/images/shoukuan.png"/>

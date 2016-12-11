@@ -328,7 +328,3 @@ permsize配置：
 
 
 -------------------
-
-##喜欢的话打赏一下吧，哈哈。
-
-<img width="400px" src="/images/shoukuan.png"/>

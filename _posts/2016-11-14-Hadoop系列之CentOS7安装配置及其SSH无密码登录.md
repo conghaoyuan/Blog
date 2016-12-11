@@ -239,9 +239,6 @@ CentOS6.*查看ip地址命令为：`ifconfig`，CentOS7修改为：`ip addr`
 本章结束，下一章，配置jdk以及hadoop。
 
 ----------------
-##喜欢的话打赏一下吧，哈哈。
-
-<img width="400px" src="/images/shoukuan.png"/>
 
 
 

@@ -321,7 +321,3 @@ Slave上查看：
 至此，hadoop配置完成，下一步配置Zookeeper+Hbase+Hive.
 ----------
 
-##喜欢的话打赏一下吧，哈哈。
-
-<img width="400px" src="/images/shoukuan.png"/>
-
