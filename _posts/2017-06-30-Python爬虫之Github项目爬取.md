@@ -52,23 +52,21 @@ categories:
 ## 7、完整代码
 
 	# -*- coding:utf-8 -*-
-from re import search
-__author__ = 'Conghaoyuan'
-import urllib
-import urllib2
-import re
-import thread
-import time
-
-import sys
-defaultencoding = 'utf-8'
-if sys.getdefaultencoding() != defaultencoding:
-    reload(sys)
-    sys.setdefaultencoding(defaultencoding)
- 
-#github爬虫类
-class GHCrawler:
- 
+    from re import search
+    __author__ = 'Conghaoyuan'
+    import urllib
+    import urllib2
+    import re
+    import thread
+    import time
+    import sys
+    defaultencoding = 'utf-8'
+    if sys.getdefaultencoding() != defaultencoding:
+        reload(sys)
+        sys.setdefaultencoding(defaultencoding)
+     
+    #github爬虫类
+    class GHCrawler:
     #初始化方法，定义一些变量
     def __init__(self):
         self.pageIndex = 1
