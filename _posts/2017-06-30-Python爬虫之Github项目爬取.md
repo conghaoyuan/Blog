@@ -165,7 +165,7 @@ categories:
 	    }
 	    return switcher.get(argument, "nothing")
 	#自定义爬取个数
-	project_number = 50
+	project_number = 20
 	page_number = project_number/10
 	#自定义/量化（0：最流行，1：不流行，2：复刻/克隆最多，3：克隆最少，4：最近更新，5：近期最少更新）
 	options = 0
@@ -175,4 +175,9 @@ categories:
 	content = "big data"
 	search_content = content.replace(" ", "+")
 	spider.start(page_number,sort_options,search_content)
+
+
+## 8、问题
+
+Github做了反爬虫机制，如果定义的爬取项目数量较多，需要请求多个页面，由于URL请求次数过多，Github会返回由于多次请求错误。准备下一版做一个反爬虫机制来解决。
 
