@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Python爬虫之Github随笔
+title: Python爬虫之Github项目爬取
 categories:
 - 随笔
 ---
